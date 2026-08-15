@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umka Lashes | Samarqand Kiprik O'stirish (Uylarga Borish Xizmati)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS for Samarqand Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Font Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                            950: '#500724',
+                        },
+                        roseGold: {
+                            light: '#f7d6d0',
+                            DEFAULT: '#b76e79',
+                            dark: '#8b4852'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        cursive: ['Alex Brush', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Glamour Animations & Glassmorphism */
+        .glass-pink {
+            background: rgba(255, 240, 245, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(244, 114, 182, 0.25);
+        }
+        
+        .glass-dark {
+            background: rgba(30, 20, 26, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 114, 182, 0.2);
+        }
+
+        .pink-glow {
+            box-shadow: 0 10px 30px -5px rgba(236, 72, 153, 0.35);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 50%, #831843 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #f472b6 0%, #e11d48 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Before/After Slider Styling */
+        .ba-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            user-select: none;
+        }
+
+        .ba-slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #ec4899;
+            cursor: ew-resize;
+            z-index: 20;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.8);
+        }
+
+        .ba-button {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffffff;
+            border: 3px solid #ec4899;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ec4899;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .overlay-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            overflow: hidden;
+        }
+
+        /* Pulse Rings */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(236, 72, 153, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+        }
+
+        .btn-pulse {
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* Custom Leaflet Map styling */
+        #map {
+            height: 380px;
+            width: 100%;
+            border-radius: 1.25rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 via-white to-pink-100 text-gray-800 font-sans antialiased selection:bg-pink-300 selection:text-pink-900 pb-20 md:pb-0">
+
+    <!-- Top Contact Bar -->
+    <div class="bg-gradient-to-r from-pink-700 via-pink-600 to-roseGold-dark text-white text-xs md:text-sm py-2 px-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid font-bold fa-location-dot text-pink-200"></i> Samarqand shahri bo'ylab uylarga borish xizmati!
+                </span>
+                <span class="hidden sm:inline-flex items-center gap-1 text-pink-200">
+                    <i class="fa-solid fa-clock"></i> 09:00 - 21:00 (Har kuni)
+                </span>
+            </div>
+            <div class="flex items-center gap-4 font-semibold">
+                <a href="https://instagram.com/umka.lashes94" target="_blank" class="hover:text-pink-200 transition-all flex items-center gap-1.5">
+                    <i class="fa-brands fa-instagram text-lg"></i> umka.lashes94
+                </a>
+                <a href="tel:+998993320216" class="bg-white text-pink-700 px-3 py-1 rounded-full text-xs font-bold hover:bg-pink-100 transition-all shadow-sm">
+                    <i class="fa-solid fa-phone"></i> +998 99 332 02 16
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-pink border-b border-pink-200/60 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-pink-400 text-white flex items-center justify-center font-serif text-2xl font-bold shadow-md transform group-hover:rotate-6 transition-transform">
+                        U
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold text-gray-900 tracking-wide block leading-none">Umka <span class="text-pink-600">Lashes</span></span>
+                        <span class="text-xs text-pink-600 tracking-widest font-semibold uppercase">Samarqand Home Lash Studio</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
+                    <a href="#turlari" class="hover:text-pink-600 transition-colors">Kiprik Turlari</a>
+                    <a href="#narxlar" class="hover:text-pink-600 transition-colors">Narxlar (200k - 250k)</a>
+                    <a href="#haqida" class="hover:text-pink-600 transition-colors">Nega Biz?</a>
+                    <a href="#xarita" class="hover:text-pink-600 transition-colors">Xarita & Manzil</a>
+                    <a href="#faq" class="hover:text-pink-600 transition-colors">Savollar</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <a href="https://instagram.com/umka.lashes94" target="_blank" class="p-2.5 rounded-full text-pink-600 hover:bg-pink-100 transition-colors" title="Instagram Sahifamiz">
+                        <i class="fa-brands fa-instagram text-2xl"></i>
+                    </a>
+                    <button onclick="openBookingModal()" class="bg-gradient-to-r from-pink-600 to-pink-500 hover:from-pink-700 hover:to-pink-600 text-white font-bold px-5 py-2.5 rounded-full shadow-lg hover:shadow-pink-400/40 transition-all text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Band Qilish</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="md:hidden flex items-center gap-2">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-gray-700 hover:text-pink-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 border-b border-pink-100 px-4 pt-2 pb-6 space-y-3 shadow-xl">
+            <a href="#turlari" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 font-medium hover:text-pink-600">Kiprik Turlari</a>
+            <a href="#narxlar" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 font-medium hover:text-pink-600">Narxlar ro'yxati</a>
+            <a href="#haqida" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 font-medium hover:text-pink-600">Uyga borib xizmat</a>
+            <a href="#xarita" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 font-medium hover:text-pink-600">Samarqand Xaritasi</a>
+            <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 text-gray-700 font-medium hover:text-pink-600">Savol-Javob</a>
+            <div class="pt-2 border-t border-gray-100 flex flex-col gap-2">
+                <a href="tel:+998993320216" class="w-full text-center py-3 bg-pink-100 text-pink-700 font-bold rounded-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-phone"></i> +998 99 332 02 16
+                </a>
+                <button onclick="toggleMobileMenu(); openBookingModal();" class="w-full text-center py-3 bg-pink-600 text-white font-bold rounded-xl shadow-md">
+                    Uyingizga Buyurtma Berish
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-8 pb-16 md:pt-16 md:pb-24 overflow-hidden">
+        <!-- Floating Glamour Background Elements -->
+        <div class="absolute -top-20 -left-20 w-80 h-80 bg-pink-300/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 -right-20 w-96 h-96 bg-pink-200/50 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Text Info -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100 border border-pink-300 text-pink-800 text-xs sm:text-sm font-semibold shadow-sm animate-bounce">
+                        <span class="w-2.5 h-2.5 rounded-full bg-pink-600 animate-ping"></span>
+                        <i class="fa-solid fa-house-heart"></i> Samarqand shahri bo'ylab uyingizga borib xizmat!
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+                        Noyob va Tabiiy <br class="hidden sm:block">
+                        <span class="text-gradient font-cursive text-5xl sm:text-6xl lg:text-7xl lowercase">Go'zallik</span> Uyingizda!
+                    </h1>
+
+                    <p class="text-gray-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Salonga borib tirbandlikda vaqt yo'qotmang! Professional Lash Master <strong class="text-pink-700">Umka Lashes</strong> uyingizga barcha steril asbob-uskunalari bilan tashrif buyuradi. Qulay narxlar: <strong class="text-gray-900 font-bold bg-pink-100 px-2 py-0.5 rounded-md">200,000 - 250,000 SO'M</strong>.
+                    </p>
+
+                    <!-- Features Badges -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm font-medium text-gray-700">
+                        <div class="flex items-center gap-2 bg-white/80 p-2.5 rounded-xl border border-pink-100 shadow-sm">
+                            <i class="fa-solid fa-sparkles text-pink-500 text-base"></i>
+                            <span>100% Premium Material</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white/80 p-2.5 rounded-xl border border-pink-100 shadow-sm">
+                            <i class="fa-solid fa-shield-heart text-pink-500 text-base"></i>
+                            <span>3 - 5 hafta kafolat</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white/80 p-2.5 rounded-xl border border-pink-100 shadow-sm col-span-2 sm:col-span-1">
+                            <i class="fa-solid fa-hand-holding-medical text-pink-500 text-base"></i>
+                            <span>Steril & Bepozar</span>
+                        </div>
+                    </div>
+
+                    <!-- Call To Actions -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <button onclick="openBookingModal()" class="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-pink-500 hover:from-pink-700 hover:to-pink-600 text-white font-bold px-8 py-4 rounded-2xl shadow-xl hover:shadow-pink-500/30 transition-all transform hover:-translate-y-0.5 text-base flex items-center justify-center gap-3 btn-pulse">
+                            <i class="fa-solid fa-calendar-day text-lg"></i>
+                            <span>Uydan Turib Band Qilish</span>
+                        </button>
+
+                        <a href="tel:+998993320216" class="w-full sm:w-auto bg-white border-2 border-pink-500 text-pink-700 hover:bg-pink-50 font-bold px-7 py-3.5 rounded-2xl transition-all text-base flex items-center justify-center gap-3 shadow-md">
+                            <i class="fa-solid fa-phone-volume text-lg text-pink-600"></i>
+                            <span>+998 99 332 02 16</span>
+                        </a>
+                    </div>
+
+                    <!-- Social proof badge -->
+                    <div class="pt-4 flex items-center justify-center lg:justify-start gap-3 text-xs text-gray-500">
+                        <div class="flex -space-x-2">
+                            <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Client">
+                            <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Client">
+                            <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&q=80" alt="Client">
+                        </div>
+                        <div>
+                            <div class="flex text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">300+ mumtoz mijozlar Samarqandda</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Showcase / Glass Visual -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Main Frame Container -->
+                        <div class="relative rounded-3xl p-3 bg-gradient-to-b from-pink-300 via-pink-200 to-pink-400 shadow-2xl">
+                            <div class="relative rounded-2xl overflow-hidden bg-gray-900 aspect-[4/5]">
+                                <img src="https://images.unsplash.com/photo-1583001809873-a1284d563375?auto=format&fit=crop&w=900&q=80" 
+                                     alt="Umka Lashes Eyelash Extension" 
+                                     class="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+
+                                <!-- Floating Glass Badge On Image -->
+                                <div class="absolute bottom-4 left-4 right-4 glass-dark p-4 rounded-2xl text-white">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs text-pink-300 font-semibold uppercase tracking-wider">Master Umka</span>
+                                        <span class="bg-pink-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Kiprik Mutaxassisi</span>
+                                    </div>
+                                    <h4 class="font-serif text-lg font-bold">Har bir kiprikka alohida e'tibor</h4>
+                                    <p class="text-xs text-gray-300 mt-0.5">Samarqand shahri bo'yicha uyingizga tez va qulay yetib boramiz.</p>
+                                </div>
+
+                                <!-- Floating Badge Top Right -->
+                                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 text-xs font-bold text-pink-700">
+                                    <i class="fa-brands fa-instagram text-pink-600 text-sm"></i> @umka.lashes94
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Floating Card -->
+                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl border border-pink-100 flex items-center gap-3 hidden sm:flex">
+                            <div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-500 font-medium">Hamyonbop narxlar</div>
+                                <div class="text-lg font-bold text-pink-700">200,000 - 250,000 so'm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES & PRICING CATALOG (200k - 250k UZS) -->
+    <section id="turlari" class="py-16 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3.5 py-1 rounded-full">Katalog va Xizmatlar</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Kiprik Uzaytirish Turlari va Narxlari</h2>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base">Barcha turdagi kiprik uzaytirish (наращивание ресниц) xizmatlari uyingizga borib amalga oshiriladi. Narxlar aniq va qat'iy!</p>
+
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap justify-center gap-2 mt-8">
+                    <button onclick="filterLashes('all')" class="filter-btn active-tab bg-pink-600 text-white font-semibold px-5 py-2.5 rounded-full text-xs sm:text-sm shadow-md transition-all">
+                        Barchasi
+                    </button>
+                    <button onclick="filterLashes('natural')" class="filter-btn bg-pink-50 text-gray-700 hover:bg-pink-100 font-semibold px-5 py-2.5 rounded-full text-xs sm:text-sm transition-all">
+                        Tabiiy Look
+                    </button>
+                    <button onclick="filterLashes('volume')" class="filter-btn bg-pink-50 text-gray-700 hover:bg-pink-100 font-semibold px-5 py-2.5 rounded-full text-xs sm:text-sm transition-all">
+                        Ob'yomli (2D/3D)
+                    </button>
+                    <button onclick="filterLashes('effect')" class="filter-btn bg-pink-50 text-gray-700 hover:bg-pink-100 font-semibold px-5 py-2.5 rounded-full text-xs sm:text-sm transition-all">
+                        Trend Effektlar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lash Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="lashGrid">
+                
+                <!-- Card 1: Klassika -->
+                <div class="lash-card natural bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1583001809873-a1284d563375?auto=format&fit=crop&w=600&q=80" alt="Klassik Kiprik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                1.5 - 2 Soat
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">Klassik Kiprik (Natural Look)</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Tabiiy</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            Har bir o'zingizning kiprigingizga 1 tadan sun'iy kiprik qo'yiladi. Har kungi tabiiy ko'rinish va yengillik uchun ideal tanlov.
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Juda engil va qulay</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Natural makiyaj effekti</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 3-4 hafta</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Xizmat narxi</span>
+                            <span class="text-2xl font-extrabold text-pink-700">200,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('Klassik Kiprik (Natural)', '200,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2: 2D Mukammal Ob'yom -->
+                <div class="lash-card volume bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80" alt="2D Kiprik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                2 Soat
+                            </span>
+                            <span class="absolute top-3 right-3 bg-pink-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                Xit Turlar!
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">2D Mukammal Ob'yom</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Ko'p tanlanadi</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            Har bir alami kiprikka 2 tadan engil kipriklar ulanadi. Ko'zlaringizga o'rtacha quyuqlik va joziba bag'ishlaydi.
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Mayin va quyuqroq nigoh</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Tuxtovsiz maqtovlar kafolati</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 4 haftagacha</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Xizmat narxi</span>
+                            <span class="text-2xl font-extrabold text-pink-700">220,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('2D Mukammal Ob\'yom', '220,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3: 3D Hashamatli Ob'yom -->
+                <div class="lash-card volume bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="3D Kiprik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                2 - 2.5 Soat
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">3D Hashamatli Kiprik</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Glamour</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            3 barobar quyuqroq va jozibador effekt. To'ylar, tadbirlar va yorqin uslubni xush ko'ruvchi xonimlar uchun!
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Maxsus ultrafine ipak kipriklar</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Yorqin, qora va jozibali</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 4-5 hafta</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Xizmat narxi</span>
+                            <span class="text-2xl font-extrabold text-pink-700">240,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('3D Hashamatli Kiprik', '240,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4: Wet Look / Namlangan Effekt -->
+                <div class="lash-card effect bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80" alt="Wet Look Kiprik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                2 Soat
+                            </span>
+                            <span class="absolute top-3 right-3 bg-roseGold text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                Trend 2026
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">Wet Look (Namlangan Effekt)</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Zamonaviy</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            Suvdan endi chiqqandek yengil va terilgan effekti beruvchi ultra-trend kiprik uzaytirish texnikasi.
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Zamonaviy va juda uslubli</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Tush qalamga ehtiyoj qolmaydi</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 4 hafta</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Xizmat narxi</span>
+                            <span class="text-2xl font-extrabold text-pink-700">230,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('Wet Look (Namlangan)', '230,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Tulkisimon (Fox Effect) -->
+                <div class="lash-card effect bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1588516903720-8ceb67f9ef84?auto=format&fit=crop&w=600&q=80" alt="Fox Effect Kiprik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                2 Soat
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">Fox Effect (Tulkisimon)</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Sehrli Nigoh</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            Ko'zning tashqi burchaklari tomonga uzayib boruvchi shakl. Ko'zlarga chiroyli strelka shaklini beradi.
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Vizual uzaytirish effekti</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Mushuksimon va sirli ko'rinish</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 4 hafta</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Xizmat narxi</span>
+                            <span class="text-2xl font-extrabold text-pink-700">240,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('Fox Effect (Tulkisimon)', '240,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 6: Hollywood / Mega Volume -->
+                <div class="lash-card volume bg-gradient-to-b from-pink-50/50 to-white border border-pink-100 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-pink-300 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative overflow-hidden rounded-2xl h-48 mb-5 bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=600&q=80" alt="Hollywood Mega Volume" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                2.5 Soat
+                            </span>
+                            <span class="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-pink-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                Premium VIP
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-serif text-xl font-bold text-gray-900">Hollywood Mega Volume</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-md">Maksimal Ob'yom</span>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                            Maksimal darajadagi quyuqlik va baxmal effekti. Fotosessiyalar va alohida tantanalar uchun eng yorqin tanlov.
+                        </p>
+                        <ul class="text-xs text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Zich, quyuq va yumshoq baxmal</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Premium gipoallergen ipak</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-pink-600"></i> Saqlanishi: 5 haftagacha</li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-pink-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Maksimal narx</span>
+                            <span class="text-2xl font-extrabold text-pink-700">250,000 <span class="text-xs font-semibold text-gray-500">SO'M</span></span>
+                        </div>
+                        <button onclick="selectService('Hollywood Mega Volume', '250,000 SO\'M')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md transition-all">
+                            Tanlash
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- BEFORE / AFTER INTERACTIVE COMPARISON SLIDER -->
+    <section class="py-16 bg-gradient-to-br from-pink-900 via-pink-950 to-gray-900 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 text-xs font-bold px-3.5 py-1 rounded-full uppercase tracking-wider">
+                        Natijani Ko'ring
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold leading-tight">
+                        Farqni O'zingiz Baho Bering: <br>
+                        <span class="text-pink-400 font-cursive text-4xl sm:text-5xl">Oldin va Keyin</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Umka Lashes masteri tomonidan bajarilgan ishlardan namuna. Slayderni surib, kipriklaringiz uzaytirilgandan so'ng ko'zlaringiz qanchalik yorqin va maftunkor bo'lishini ko'rishingiz mumkin!
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-pink-600/30 text-pink-400 flex items-center justify-center shrink-0 font-bold">1</div>
+                            <p class="text-xs text-gray-300"><strong class="text-white block">Tabiiy kipriklarga ziyon yetmaydi</strong> Biz ishlatadigan yelim va ipak materiallar mutlaqo xavfsiz.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-pink-600/30 text-pink-400 flex items-center justify-center shrink-0 font-bold">2</div>
+                            <p class="text-xs text-gray-300"><strong class="text-white block">Ko'zingiz shakliga mos tanlov</strong> Har bir mijozga ko'z va qosh tuzilishiga qarab induvidual moslaymiz.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button onclick="openBookingModal()" class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg transition-all text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Menga Ham Shunday Kiprik Kerak
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Slider Widget -->
+                <div class="lg:col-span-7">
+                    <div class="ba-container shadow-2xl border-2 border-pink-500/30 aspect-[16/10] bg-gray-800" id="baContainer">
+                        <!-- After Image (Background) -->
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80" alt="Kipriklar Keyin" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">
+                            KEYIN (Umka Lashes)
+                        </div>
+
+                        <!-- Before Image (Overlay) -->
+                        <div class="overlay-image" id="baOverlay">
+                            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1200&q=80" alt="Kipriklar Oldin" class="w-full h-full object-cover max-w-none" id="baBeforeImg">
+                            <div class="absolute top-4 left-4 bg-gray-900/80 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10">
+                                OLDIN (Tabiiy)
+                            </div>
+                        </div>
+
+                        <!-- Slider Handle -->
+                        <div class="ba-slider" id="baSlider">
+                            <div class="ba-button">
+                                <i class="fa-solid fa-arrows-left-right text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-gray-400 mt-3">
+                        <i class="fa-solid fa-hand-pointer text-pink-400"></i> Slayderni chapga va o'ngga surib ko'ring
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE QUIZ SECTION -->
+    <section class="py-16 bg-pink-50/60 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-pink-100 text-center">
+                <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3 py-1 rounded-full">
+                    Aqliy Maslahat
+                </span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-3">
+                    Qaysi kiprik turi sizga ko'proq mos keladi?
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-600 mt-2">
+                    3 ta oddiy savolga javob bering va o'zingizga mos kiprik turini toping!
+                </p>
+
+                <div id="quizBox" class="mt-8 text-left">
+                    <!-- Question 1 -->
+                    <div id="q1" class="quiz-step space-y-4">
+                        <h4 class="font-bold text-gray-800 text-base">1-savol: Kundalik hayotda qanday makiyajni afzal ko'rasiz?</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button onclick="nextQuizStep(1, 'natural')" class="p-4 rounded-2xl border-2 border-pink-100 hover:border-pink-500 hover:bg-pink-50 text-left transition-all font-medium text-xs sm:text-sm">
+                                ✨ Yengil va juda tabiiy, deyarli makiyajsiz
+                            </button>
+                            <button onclick="nextQuizStep(1, 'volume')" class="p-4 rounded-2xl border-2 border-pink-100 hover:border-pink-500 hover:bg-pink-50 text-left transition-all font-medium text-xs sm:text-sm">
+                                💄 Yorqin, quyuq va e'tiborni tortuvchi
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div id="q2" class="quiz-step hidden space-y-4">
+                        <h4 class="font-bold text-gray-800 text-base">2-savol: Ko'zingiz shakli va istagingiz qanday?</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button onclick="nextQuizStep(2, 'fox')" class="p-4 rounded-2xl border-2 border-pink-100 hover:border-pink-500 hover:bg-pink-50 text-left transition-all font-medium text-xs sm:text-sm">
+                                🦊 Ko'zlarim strelkadek cho'zilishini xohlayman
+                            </button>
+                            <button onclick="nextQuizStep(2, 'doll')" class="p-4 rounded-2xl border-2 border-pink-100 hover:border-pink-500 hover:bg-pink-50 text-left transition-all font-medium text-xs sm:text-sm">
+                                👁️ Ko me'yorida katta va yumaloqroq ko'rinishini istayman
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result Box -->
+                    <div id="quizResult" class="hidden p-6 rounded-2xl bg-gradient-to-r from-pink-100 to-rose-100 border border-pink-300 text-center space-y-4">
+                        <div class="w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center mx-auto text-xl">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900" id="recommendedTitle">Siz uchun tavsiya etiladi: 2D Mukammal Ob'yom</h4>
+                        <p class="text-xs text-gray-700 max-w-lg mx-auto" id="recommendedDesc">
+                            Bu tur sizning ko'zingizga ham ko'rkamlik, ham qulaylik bag'ishlaydi. Narxi: 220,000 SO'M.
+                        </p>
+                        <div class="pt-2">
+                            <button id="quizBookBtn" onclick="openBookingModal()" class="bg-pink-600 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-md">
+                                Uyingizga Ushbu Turga Buyurtma Berish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SAMARQAND MAP & HOME SERVICE ZONE SECTION -->
+    <section id="xarita" class="py-16 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3.5 py-1 rounded-full">
+                        Samarqand Shahri
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900">
+                        Uyingizga Bepul/Qulay Tashrif Buyuramiz!
+                    </h2>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Siz salonga borish uchun taksi yoki tirbandlikda vaqt yo'qotmaysiz. Master Umka barcha steril va maxsus uskunalari, qulay kushetkasi va yoritgichlari bilan samarali ravishda uyingizga boradi.
+                    </p>
+
+                    <!-- Samarqand Districts List -->
+                    <div class="space-y-3 pt-2">
+                        <h4 class="font-bold text-gray-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-map-pin text-pink-600"></i> Samarqandning barcha tumanlariga xizmat ko'rsatiladi:
+                        </h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs text-gray-700 font-medium">
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Registon & Markaz
+                            </div>
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Sug'diyona / Mikrorayon
+                            </div>
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Dagbit & Motrid
+                            </div>
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Siyob & Vokzal
+                            </div>
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Gagarin & Bulvar
+                            </div>
+                            <div class="flex items-center gap-2 bg-pink-50 p-2 rounded-lg border border-pink-100">
+                                <i class="fa-solid fa-check text-pink-600"></i> Sattepo & Atrof hududlar
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-pink-100/60 rounded-2xl border border-pink-200 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-pink-900 font-bold block">Savollaringiz bormi?</span>
+                            <span class="text-xs text-gray-600">Sana va manzilingizni aniqlashtirish uchun:</span>
+                        </div>
+                        <a href="tel:+998993320216" class="bg-pink-600 text-white font-bold px-4 py-2 rounded-xl text-xs hover:bg-pink-700">
+                            Qo'ng'iroq
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Samarqand Map Box -->
+                <div class="lg:col-span-7">
+                    <div class="bg-gradient-to-br from-pink-200 to-pink-100 p-3 rounded-3xl shadow-xl">
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE UMKA LASHES -->
+    <section id="haqida" class="py-16 bg-gradient-to-b from-white to-pink-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3.5 py-1 rounded-full">Afzalliklarimiz</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Nega Aynan Umka Lashes?</h2>
+                <p class="text-gray-600 mt-2 text-xs sm:text-sm">Uyingiz shinamligida salon darajasidagi professional xizmat!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Feature 1 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md hover:shadow-lg transition-all text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto text-2xl mb-4">
+                        <i class="fa-solid fa-house-user"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Uydan Chiqmaysiz</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        Charchatuvchi yo'llar va kutilmalar yo'q. Qulay vaqtingizni tanlaysiz, master uyingizga o'zi boradi.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md hover:shadow-lg transition-all text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto text-2xl mb-4">
+                        <i class="fa-solid fa-pump-medical"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">100% Steril & Toza</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        Har bir mijoz uchun alohida bir marta ishlatiladigan (одноразовый) cho'tkalar va dezinfektsiyalangan instrumentlar.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md hover:shadow-lg transition-all text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto text-2xl mb-4">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Gipoallergen Materiallar</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        Ko'zlarni achishtirmaydigan va qizamaydirgan premium Janubiy Koreya yelim va ipak kipriklari.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md hover:shadow-lg transition-all text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto text-2xl mb-4">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base mb-2">Hamyonbop Narx</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed">
+                        Barcha premium xizmatlar atigi 200,000 dan 250,000 so'mgacha! Yashirin ustamalar va ortiqcha to'lovlarsiz.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS & INSTAGRAM BANNER -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3.5 py-1 rounded-full">Mijozlar Fikri</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Mijozlarimiz Nima Deyishadi?</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-pink-50/60 p-6 rounded-3xl border border-pink-100 space-y-4">
+                    <div class="flex text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-gray-700 italic leading-relaxed">
+                        "Uyimga kelib 2D kiprik qilib berishdi. Juda ham xursand bo'ldim, bolam kichkina bo'lgani uchun salonga borolmasdim. Umka opaga katta rahmat!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-pink-300 text-pink-800 font-bold flex items-center justify-center text-sm">
+                            M
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xs text-gray-900">Malika R.</h4>
+                            <span class="text-[10px] text-gray-500">Samarqand (Registon)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-pink-50/60 p-6 rounded-3xl border border-pink-100 space-y-4">
+                    <div class="flex text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-gray-700 italic leading-relaxed">
+                        "Wet Look tanlagandim, natijasi dahshat chiqqan! 4 hafta bo'ldi hali ham to'kilib ketgani yo'q. Samarqanddagi eng yaxshi lashmaker!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-pink-300 text-pink-800 font-bold flex items-center justify-center text-sm">
+                            S
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xs text-gray-900">Sevinch K.</h4>
+                            <span class="text-[10px] text-gray-500">Samarqand (Sug'diyona)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-pink-50/60 p-6 rounded-3xl border border-pink-100 space-y-4">
+                    <div class="flex text-amber-400 text-xs">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-xs text-gray-700 italic leading-relaxed">
+                        "To'yim uchun 3D kiprik yaptirdim. Ko'zlarim umuman achishmadi, kleyi gipoallergen ekan. Hammaning havasi keldi. Rahmat Umka Lashes!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-pink-300 text-pink-800 font-bold flex items-center justify-center text-sm">
+                            D
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xs text-gray-900">Dilnoza M.</h4>
+                            <span class="text-[10px] text-gray-500">Samarqand (Mikrorayon)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instagram Callout Banner -->
+            <div class="mt-12 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-700 rounded-3xl p-8 text-white text-center shadow-xl relative overflow-hidden">
+                <div class="relative z-10 space-y-4">
+                    <i class="fa-brands fa-instagram text-5xl opacity-90"></i>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold">Instagram Sahifamizga A'zo Bo'ling!</h3>
+                    <p class="text-xs sm:text-sm text-pink-100 max-w-xl mx-auto">
+                        Har kuni yangi ish jarayonlari, mijozlar video-sharhlari va maxsus chegirmalar Instagram sahifamizda!
+                    </p>
+                    <a href="https://instagram.com/umka.lashes94" target="_blank" class="inline-flex items-center gap-2 bg-white text-pink-700 font-extrabold px-8 py-3.5 rounded-full shadow-lg hover:bg-pink-100 transition-all text-sm">
+                        <span>@umka.lashes94 ga Kirish</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION -->
+    <section id="faq" class="py-16 bg-pink-50/40">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-10">
+                <span class="text-pink-600 font-bold text-xs uppercase tracking-widest bg-pink-100 px-3.5 py-1 rounded-full">Ko'p Beriladigan Savollar</span>
+                <h2 class="font-serif text-3xl font-bold text-gray-900 mt-3">Tez-tez Beriladigan Savollar</h2>
+            </div>
+
+            <div class="space-y-4" id="faqAccordion">
+                
+                <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq(1)" class="w-full text-left p-5 font-bold text-gray-800 text-sm flex justify-between items-center">
+                        <span>1. Kipriklar qancha vaqt saqlanadi?</span>
+                        <i class="fa-solid fa-chevron-down text-pink-600 transition-transform" id="faqIcon1"></i>
+                    </button>
+                    <div id="faqContent1" class="hidden px-5 pb-5 text-xs text-gray-600 leading-relaxed border-t border-gray-50 pt-3">
+                        Kipriklar o'rtacha 3 haftadan 5 haftagacha mukammal saqlanadi. Bu sizning tabiiy kipriklaringiz to'kilish sikliga va parvarishingizga bog'liq.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq(2)" class="w-full text-left p-5 font-bold text-gray-800 text-sm flex justify-between items-center">
+                        <span>2. Uyingizga kelishingiz uchun nima tayyorlashim kerak?</span>
+                        <i class="fa-solid fa-chevron-down text-pink-600 transition-transform" id="faqIcon2"></i>
+                    </button>
+                    <div id="faqContent2" class="hidden px-5 pb-5 text-xs text-gray-600 leading-relaxed border-t border-gray-50 pt-3">
+                        Sizdan hech narsa talab qilinmaydi! Master Umka o'zi bilan maxsus yumshoq kushetka, yoritgich (krugovaya lampa) va barcha steril asboblarni olib boradi. Faqat xonada rozetka bo'lsa kifoya.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq(3)" class="w-full text-left p-5 font-bold text-gray-800 text-sm flex justify-between items-center">
+                        <span>3. Jarayon og'riqlimi yoki ko'zga ziyon qiladimi?</span>
+                        <i class="fa-solid fa-chevron-down text-pink-600 transition-transform" id="faqIcon3"></i>
+                    </button>
+                    <div id="faqContent3" class="hidden px-5 pb-5 text-xs text-gray-600 leading-relaxed border-t border-gray-50 pt-3">
+                        Mutlaqo yo'q! Muolaja vaqtida ko'pchilik mijozlarimiz maza qilib uxlab qolishadi. Barcha ishlatiladigan vositalar gipoallergen va xavfsizdir.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-pink-100 overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq(4)" class="w-full text-left p-5 font-bold text-gray-800 text-sm flex justify-between items-center">
+                        <span>4. Samarqand bo'ylab borish narxi qancha?</span>
+                        <i class="fa-solid fa-chevron-down text-pink-600 transition-transform" id="faqIcon4"></i>
+                    </button>
+                    <div id="faqContent4" class="hidden px-5 pb-5 text-xs text-gray-600 leading-relaxed border-t border-gray-50 pt-3">
+                        Kiprik xizmati narxi 200,000 - 250,000 so'm oralig'ida. Samarqand shahar ichida uylarga borish mutlaqo qulay va arzon shartlarda amalga oshiriladi.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-pink-100 max-h-[90vh] overflow-y-auto">
+            
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center hover:bg-pink-200 transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-gray-900">Uydan Turib Band Qilish</h3>
+                <p class="text-xs text-gray-500 mt-1">Ma'lumotlarni kiriting, biz siz bilan tezda bog'lanamiz!</p>
+            </div>
+
+            <form id="bookingForm" onsubmit="submitBooking(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Ismingiz</label>
+                    <input type="text" id="clientName" required placeholder="Masalan: Mavluda" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Telefon Raqamingiz</label>
+                    <input type="tel" id="clientPhone" required value="+998 " class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kiprik Turi & Narxi</label>
+                    <select id="serviceSelect" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none">
+                        <option value="Klassik Kiprik (200,000 SO'M)">Klassik Kiprik - 200,000 SO'M</option>
+                        <option value="2D Mukammal Ob'yom (220,000 SO'M)" selected>2D Mukammal Ob'yom - 220,000 SO'M</option>
+                        <option value="3D Hashamatli Kiprik (240,000 SO'M)">3D Hashamatli Kiprik - 240,000 SO'M</option>
+                        <option value="Wet Look Namlangan (230,000 SO'M)">Wet Look (Namlangan) - 230,000 SO'M</option>
+                        <option value="Fox Effect Tulkisimon (240,000 SO'M)">Fox Effect (Tulkisimon) - 240,000 SO'M</option>
+                        <option value="Hollywood Mega Volume (250,000 SO'M)">Hollywood Mega Volume - 250,000 SO'M</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Samarqanddagi Manzilingiz (Tuman/Ko'cha)</label>
+                    <input type="text" id="clientAddress" required placeholder="Masalan: Samarqand, Sug'diyona, 12-uy" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Qulay Kuni va Vaqti</label>
+                    <input type="datetime-local" id="clientTime" required class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-pink-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:from-pink-700 hover:to-pink-600 transition-all text-xs flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Buyurtmani Tasdiqlash</span>
+                </button>
+            </form>
+
+            <div id="bookingSuccess" class="hidden text-center py-6 space-y-3">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="text-xl font-bold text-gray-900">Buyurtmangiz Qabul Qilindi!</h4>
+                <p class="text-xs text-gray-600">
+                    Master Umka tez orada telefon raqamingizga bog'lanadi va vaqtni tasdiqlaydi.
+                </p>
+                <button onclick="closeBookingModal()" class="bg-pink-600 text-white font-bold px-6 py-2.5 rounded-xl text-xs">
+                    Yopish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING CONTACT DOCK (MOBILE) -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-pink-200 p-3 flex md:hidden items-center justify-around shadow-2xl">
+        <a href="tel:+998993320216" class="flex flex-col items-center text-pink-700 font-bold text-[10px]">
+            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-700 text-base mb-0.5">
+                <i class="fa-solid fa-phone"></i>
+            </div>
+            Qo'ng'iroq
+        </a>
+
+        <a href="https://instagram.com/umka.lashes94" target="_blank" class="flex flex-col items-center text-pink-700 font-bold text-[10px]">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center text-lg mb-0.5 shadow-md">
+                <i class="fa-brands fa-instagram"></i>
+            </div>
+            Instagram
+        </a>
+
+        <button onclick="openBookingModal()" class="flex items-center gap-2 bg-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-xs shadow-lg">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <span>Band Qilish</span>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white pt-12 pb-16 md:pb-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-9 h-9 rounded-xl bg-pink-600 text-white flex items-center justify-center font-serif text-xl font-bold">U</div>
+                        <span class="font-serif text-xl font-bold">Umka Lashes</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Samarqand shahri bo'ylab uylarga borib professional kiprik uzaytirish (наращивание) xizmati.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-pink-400 mb-3">Xizmatlar</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li>Klassik Kiprik - 200,000 SO'M</li>
+                        <li>2D Mukammal Ob'yom - 220,000 SO'M</li>
+                        <li>3D Hashamatli Kiprik - 240,000 SO'M</li>
+                        <li>Hollywood Mega Volume - 250,000 SO'M</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-pink-400 mb-3">Aloqa</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><i class="fa-solid fa-phone text-pink-500 mr-2"></i> +998 99 332 02 16</li>
+                        <li><i class="fa-brands fa-instagram text-pink-500 mr-2"></i> @umka.lashes94</li>
+                        <li><i class="fa-solid fa-location-dot text-pink-500 mr-2"></i> Samarqand shahri, O'zbekiston</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-pink-400 mb-3">Ish Vaqti</h4>
+                    <p class="text-xs text-gray-400">Har kuni: 09:00 - 21:00</p>
+                    <p class="text-[11px] text-pink-300 mt-2">Oldindan 1 kun oldin yozilish tavsiya etiladi.</p>
+                </div>
+
+            </div>
+
+            <div class="pt-6 border-t border-gray-800 text-center text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <span>© 2026 Umka Lashes Samarqand. Barcha huquqlar himoyalangan.</span>
+                <a href="https://instagram.com/umka.lashes94" target="_blank" class="text-pink-400 hover:underline">
+                    Instagram: umka.lashes94
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS for Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // 1. Initialize Samarqand Map
+        window.addEventListener('load', function () {
+            // Samarqand central coordinates: [39.6542, 66.9597]
+            const map = L.map('map').setView([39.6542, 66.9597], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Custom Pink Marker Icon
+            const pinkIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color:#ec4899; width:22px; height:22px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.4);"></div>`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+
+            // Add center marker
+            L.marker([39.6542, 66.9597], {icon: pinkIcon}).addTo(map)
+                .bindPopup('<b>Umka Lashes Samarqand</b><br>Uyingizga borish xizmati markazi!')
+                .openPopup();
+
+            // Home service circle overlay
+            L.circle([39.6542, 66.9597], {
+                color: '#ec4899',
+                fillColor: '#f472b6',
+                fillOpacity: 0.2,
+                radius: 7000
+            }).addTo(map);
+        });
+
+        // 2. Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 3. Service Filter Tabs
+        function filterLashes(category) {
+            const cards = document.querySelectorAll('.lash-card');
+            const btns = document.querySelectorAll('.filter-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-pink-600', 'text-white', 'active-tab');
+                btn.classList.add('bg-pink-50', 'text-gray-700');
+            });
+
+            event.currentTarget.classList.remove('bg-pink-50', 'text-gray-700');
+            event.currentTarget.classList.add('bg-pink-600', 'text-white', 'active-tab');
+
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                } else if (card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 4. Before / After Interactive Drag Slider
+        const baContainer = document.getElementById('baContainer');
+        const baOverlay = document.getElementById('baOverlay');
+        const baSlider = document.getElementById('baSlider');
+        const baBeforeImg = document.getElementById('baBeforeImg');
+
+        let isDragging = false;
+
+        function setSliderWidth(x) {
+            const rect = baContainer.getBoundingClientRect();
+            let position = x - rect.left;
+            if (position < 0) position = 0;
+            if (position > rect.width) position = rect.width;
+
+            const percentage = (position / rect.width) * 100;
+            baOverlay.style.width = percentage + '%';
+            baSlider.style.left = percentage + '%';
+            baBeforeImg.style.width = rect.width + 'px';
+        }
+
+        // Resize handler for before image width sync
+        window.addEventListener('resize', () => {
+            if (baContainer && baBeforeImg) {
+                baBeforeImg.style.width = baContainer.offsetWidth + 'px';
+            }
+        });
+        if (baContainer && baBeforeImg) {
+            baBeforeImg.style.width = baContainer.offsetWidth + 'px';
+        }
+
+        baContainer.addEventListener('mousedown', (e) => { isDragging = true; setSliderWidth(e.clientX); });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        window.addEventListener('mousemove', (e) => { if (isDragging) setSliderWidth(e.clientX); });
+
+        // Touch events for mobile
+        baContainer.addEventListener('touchstart', (e) => { isDragging = true; setSliderWidth(e.touches[0].clientX); });
+        window.addEventListener('touchend', () => { isDragging = false; });
+        window.addEventListener('touchmove', (e) => { if (isDragging) setSliderWidth(e.touches[0].clientX); });
+
+        // 5. Quiz Logic
+        let quizAnswers = {};
+
+        function nextQuizStep(step, answer) {
+            quizAnswers[step] = answer;
+            if (step === 1) {
+                document.getElementById('q1').classList.add('hidden');
+                document.getElementById('q2').classList.remove('hidden');
+            } else if (step === 2) {
+                document.getElementById('q2').classList.add('hidden');
+                document.getElementById('quizResult').classList.remove('hidden');
+
+                const title = document.getElementById('recommendedTitle');
+                const desc = document.getElementById('recommendedDesc');
+
+                if (quizAnswers[1] === 'natural') {
+                    title.textContent = "Siz uchun tavsiya: Klassik Kiprik (Natural Look)";
+                    desc.textContent = "Siz tabiiylikni xush ko'rganingiz uchun ushbu tur sizga juda yarashadi! Narxi: 200,000 SO'M.";
+                } else if (answer === 'fox') {
+                    title.textContent = "Siz uchun tavsiya: Fox Effect (Tulkisimon)";
+                    desc.textContent = "Ko'zingiz shakliga strelka effekti berib, sirli va maftunkor nigoh hosil qiladi! Narxi: 240,000 SO'M.";
+                } else {
+                    title.textContent = "Siz uchun tavsiya: 2D/3D Mukammal Ob'yom";
+                    desc.textContent = "Yetarlicha quyuq, baxmal dek yumshoq va juda jozibali effekt. Narxi: 220,000 - 240,000 SO'M.";
+                }
+            }
+        }
+
+        // 6. FAQ Accordion Toggle
+        function toggleFaq(index) {
+            const content = document.getElementById(`faqContent${index}`);
+            const icon = document.getElementById(`faqIcon${index}`);
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 7. Booking Modal Logic
+        function openBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.getElementById('bookingForm').classList.remove('hidden');
+            document.getElementById('bookingSuccess').classList.add('hidden');
+        }
+
+        function selectService(serviceName, price) {
+            openBookingModal();
+            const select = document.getElementById('serviceSelect');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value.includes(serviceName)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const service = document.getElementById('serviceSelect').value;
+            const address = document.getElementById('clientAddress').value;
+            const time = document.getElementById('clientTime').value;
+
+            // Pre-fill phone call / message trigger
+            document.getElementById('bookingForm').classList.add('hidden');
+            document.getElementById('bookingSuccess').classList.remove('hidden');
+
+            // Open phone dialer automatically for smooth experience
+            setTimeout(() => {
+                window.location.href = `tel:+998993320216`;
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
