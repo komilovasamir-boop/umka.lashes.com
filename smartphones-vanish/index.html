@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Phones Vanish Forever</title>
+<style>
+  :root{--bg:#07070c;--ink:#f5f5f7;--muted:#9a9aab;--accent:#ff3b5c;--accent2:#ffd23f;--good:#3ddc97}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#000;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+  body{display:flex;align-items:center;justify-content:center}
+  /* Fixed 9:16 stage (1080x1920 logical), scaled to fit */
+  #stage{position:relative;width:1080px;height:1920px;background:var(--bg);overflow:hidden;transform-origin:center center;flex:none;user-select:none;cursor:pointer}
+  .bars{position:absolute;top:40px;left:40px;right:40px;display:flex;gap:10px;z-index:10}
+  .bar{flex:1;height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:#fff}
+  .tag{position:absolute;top:80px;left:40px;font:700 34px/1 system-ui;letter-spacing:4px;color:var(--muted);z-index:10;text-transform:uppercase}
+  .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:160px 90px;text-align:center;opacity:0;pointer-events:none}
+  .scene.on{opacity:1}
+  .when{font:800 44px/1 system-ui;letter-spacing:6px;color:var(--accent2);margin-bottom:50px;text-transform:uppercase}
+  .icon{font-size:300px;line-height:1;margin-bottom:60px}
+  h1{font:900 120px/1.02 system-ui;letter-spacing:-3px}
+  h2{font:850 92px/1.05 system-ui;letter-spacing:-2px}
+  p{font:500 52px/1.35 system-ui;color:#d4d4de;margin-top:44px}
+  .big{font:900 260px/1 system-ui;color:var(--accent);letter-spacing:-8px}
+  .accent{color:var(--accent)} .yellow{color:var(--accent2)} .green{color:var(--good)}
+  /* entrance animation for children */
+  .scene.on > *{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+  .scene.on > *:nth-child(2){animation-delay:.25s}
+  .scene.on > *:nth-child(3){animation-delay:.55s}
+  .scene.on > *:nth-child(4){animation-delay:.9s}
+  .scene.on > *:nth-child(5){animation-delay:1.2s}
+  @keyframes rise{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
+  /* vanishing phone */
+  .phone{width:340px;height:680px;border-radius:60px;border:16px solid #2a2a35;background:linear-gradient(160deg,#2b5cff,#a12bff 60%,#ff3b5c);margin-bottom:80px;position:relative;box-shadow:0 0 120px rgba(160,60,255,.5)}
+  .phone:before{content:"";position:absolute;top:22px;left:50%;width:120px;height:30px;margin-left:-60px;background:#000;border-radius:20px}
+  .scene.on .phone.vanish{animation:vanish 3.2s ease-in 1s both}
+  @keyframes vanish{0%{opacity:1;filter:blur(0);transform:scale(1)}60%{opacity:.6;filter:blur(4px);transform:scale(1.03) rotate(-2deg)}100%{opacity:0;filter:blur(40px);transform:scale(.6) rotate(8deg)}}
+  .particles{position:absolute;inset:0;pointer-events:none}
+  .particles span{position:absolute;width:14px;height:14px;border-radius:3px;background:#b07bff;opacity:0}
+  .scene.on .particles span{animation:fly 2.6s ease-out both}
+  @keyframes fly{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(360deg)}}
+  .list{list-style:none;margin-top:50px;text-align:left;font:600 54px/1.6 system-ui}
+  .list li{opacity:0}
+  .scene.on .list li{animation:rise .6s both}
+  .scene.on .list li:nth-child(1){animation-delay:.6s}.scene.on .list li:nth-child(2){animation-delay:1s}
+  .scene.on .list li:nth-child(3){animation-delay:1.4s}.scene.on .list li:nth-child(4){animation-delay:1.8s}
+  .scene.on .list li:nth-child(5){animation-delay:2.2s}
+  .stock{width:820px;height:420px;margin-top:40px}
+  .stock path{fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400}
+  .scene.on .stock path{animation:draw 2.4s .5s ease-in-out forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .shake{animation:shake .5s 1s 3 both}
+  .scene.on .shake{animation:rise .8s both,shake .4s 1s 4}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-18px)}75%{transform:translateX(18px)}}
+  .counter{font:900 200px/1 system-ui;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .hud{position:absolute;bottom:50px;left:0;right:0;text-align:center;font:600 30px system-ui;color:rgba(255,255,255,.45);z-index:10}
+  .btn{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);padding:28px 70px;border-radius:80px;background:#fff;color:#000;font:800 46px system-ui;border:0;cursor:pointer;z-index:11}
+  #start{position:absolute;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:60px;text-align:center;padding:90px}
+  #start .btn{position:static;transform:none}
+  .glow{position:absolute;width:900px;height:900px;border-radius:50%;filter:blur(160px);opacity:.35;z-index:0}
+  .scene > *{position:relative;z-index:1}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bars" id="bars"></div>
+  <div class="tag">What if…</div>
+
+  <div id="start">
+    <div style="font-size:220px">📵</div>
+    <h1>What if every smartphone vanished <span class="accent">forever?</span></h1>
+    <button class="btn" id="play">▶ Play</button>
+    <div style="font:500 36px system-ui;color:var(--muted)">Tap right = next · left = back · hold = pause<br>Keys: ← → space · R restart</div>
+  </div>
+
+  <!-- 1 -->
+  <section class="scene" data-dur="5500">
+    <div class="glow" style="background:#7a2bff;top:300px;left:90px"></div>
+    <div class="phone vanish"></div>
+    <h1>One morning…<br>every smartphone<br><span class="accent">is gone.</span></h1>
+    <div class="particles" id="particles"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="scene" data-dur="5000">
+    <div class="when">Hour 1</div>
+    <div class="icon shake">💳</div>
+    <h2>Payments <span class="accent">freeze</span></h2>
+    <p>Mobile wallets, QR codes and banking apps are gone. In cash-light countries, shops simply stop.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="scene" data-dur="5000">
+    <div class="when">Hour 2</div>
+    <div class="icon">🔒</div>
+    <h2>Millions <span class="accent">locked out</span></h2>
+    <p>Your 2-factor codes went to your phone. Email, bank, work: access denied.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="scene" data-dur="5000">
+    <div class="when">Hour 3</div>
+    <div class="icon">🗺️</div>
+    <h2>Nobody can <span class="yellow">find anyone</span></h2>
+    <p>No maps. No contacts. Quick: how many phone numbers do you know by heart?</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="scene" data-dur="5500">
+    <div class="when">Day 1</div>
+    <div class="icon">🚑</div>
+    <div class="counter" data-count="80">0%</div>
+    <p>of emergency calls came from mobile phones. Landlines and radios matter again.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="scene" data-dur="6000">
+    <div class="when">Week 1</div>
+    <h2>The <span class="green">comeback</span> of old tech</h2>
+    <ul class="list">
+      <li>☎️ Landlines</li>
+      <li>🗺️ Paper maps</li>
+      <li>💵 Cash</li>
+      <li>📷 Real cameras</li>
+      <li>⌚ Wristwatches</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section class="scene" data-dur="5500">
+    <div class="when">Month 1</div>
+    <h2>Tech giants <span class="accent">crash</span></h2>
+    <svg class="stock" viewBox="0 0 820 420"><path d="M20 60 L140 90 L230 70 L320 160 L400 140 L480 260 L560 240 L650 360 L800 400"/></svg>
+    <p>Phone-first apps lose their platform. Laptop makers boom.</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="scene" data-dur="5500">
+    <div class="when">Year 1</div>
+    <div class="icon">💻</div>
+    <h2>The laptop is <span class="green">king</span> again</h2>
+    <p>Less scrolling, fewer short videos, more planned meetups: "See you at 6, by the clock."</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="scene" data-dur="5500">
+    <div class="when">Hardest hit</div>
+    <div class="icon">🌍</div>
+    <h2>Billions lose their <span class="accent">only computer</span></h2>
+    <p>For much of the world, the phone was the bank, the school and the clinic.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="scene" data-dur="5500">
+    <div class="when">The catch</div>
+    <div class="icon">🏭</div>
+    <h2>We'd just <span class="yellow">build them again</span>…</h2>
+    <p>…unless they keep vanishing. Then the future belongs to watches, glasses and desks.</p>
+  </section>
+
+  <!-- 11 -->
+  <section class="scene" data-dur="6000">
+    <div class="glow" style="background:#ff3b5c;top:500px;left:90px"></div>
+    <div class="icon">🤔</div>
+    <h1>Would <span class="accent">you</span> survive without yours?</h1>
+    <p>Comment below 👇</p>
+  </section>
+
+  <div class="hud" id="hud"></div>
+</div>
+
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const scenes = [...document.querySelectorAll('.scene')];
+  const barsEl = document.getElementById('bars');
+  const hud = document.getElementById('hud');
+  let idx = -1, start = 0, elapsed = 0, paused = false, raf = 0;
+
+  // Scale the fixed 1080x1920 stage to fit any screen, keeping 9:16
+  function fit(){
+    const s = Math.min(innerWidth / 1080, innerHeight / 1920);
+    stage.style.transform = `scale(${s})`;
+    stage.style.margin = `${(innerHeight - 1920) / 2}px ${(innerWidth - 1080) / 2}px`;
+  }
+  addEventListener('resize', fit); fit();
+
+  scenes.forEach(() => { const b = document.createElement('div'); b.className = 'bar'; b.innerHTML = '<i></i>'; barsEl.appendChild(b); });
+  const fills = [...barsEl.querySelectorAll('i')];
+
+  // particles for the vanishing phone
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('span');
+    const a = Math.random() * Math.PI * 2, d = 300 + Math.random() * 600;
+    s.style.left = (540 + (Math.random() - .5) * 300) + 'px';
+    s.style.top = (700 + (Math.random() - .5) * 600) + 'px';
+    s.style.setProperty('--x', Math.cos(a) * d + 'px');
+    s.style.setProperty('--y', Math.sin(a) * d - 300 + 'px');
+    s.style.animationDelay = (1.6 + Math.random() * 1.6) + 's';
+    s.style.background = ['#b07bff', '#2b5cff', '#ff3b5c'][i % 3];
+    pc.appendChild(s);
+  }
+
+  function show(i){
+    if (i < 0) i = 0;
+    if (i >= scenes.length) { end(); return; }
+    scenes.forEach(s => s.classList.remove('on'));
+    void stage.offsetWidth; // restart CSS animations
+    idx = i; elapsed = 0; start = performance.now();
+    scenes[i].classList.add('on');
+    fills.forEach((f, k) => f.style.width = k < i ? '100%' : '0%');
+    const c = scenes[i].querySelector('[data-count]');
+    if (c) countUp(c, +c.dataset.count);
+    hud.textContent = `${i + 1} / ${scenes.length}`;
+  }
+
+  function countUp(el, target){
+    const t0 = performance.now();
+    const step = t => { const p = Math.min(1, (t - t0) / 1800); el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + '%'; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+
+  function tick(t){
+    if (!paused && idx >= 0) {
+      const dur = +scenes[idx].dataset.dur;
+      const e = elapsed + (t - start);
+      fills[idx].style.width = Math.min(100, e / dur * 100) + '%';
+      if (e >= dur) show(idx + 1);
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function setPaused(p){
+    if (p === paused || idx < 0) return;
+    if (p) elapsed += performance.now() - start; else start = performance.now();
+    paused = p;
+    stage.querySelectorAll('.scene.on *').forEach(n => n.style.animationPlayState = p ? 'paused' : 'running');
+    hud.textContent = p ? '❚❚ Paused' : `${idx + 1} / ${scenes.length}`;
+  }
+
+  function end(){
+    fills.forEach(f => f.style.width = '100%');
+    hud.textContent = 'Tap or press R to replay';
+    idx = scenes.length; // stops ticking
+    paused = true;
+  }
+
+  function restart(){ paused = false; document.getElementById('start').style.display = 'none'; show(0); }
+
+  document.getElementById('play').addEventListener('click', e => { e.stopPropagation(); restart(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); });
+
+  // Tap: left third = back, otherwise next. Hold = pause.
+  let holdT = 0, held = false;
+  stage.addEventListener('pointerdown', () => { held = false; holdT = setTimeout(() => { held = true; setPaused(true); }, 250); });
+  stage.addEventListener('pointerup', e => {
+    clearTimeout(holdT);
+    if (document.getElementById('start').style.display !== 'none') return;
+    if (held) { setPaused(false); return; }
+    if (idx >= scenes.length) { restart(); return; }
+    const r = stage.getBoundingClientRect();
+    paused = false;
+    show((e.clientX - r.left) < r.width / 3 ? idx - 1 : idx + 1);
+  });
+
+  addEventListener('keydown', e => {
+    if (document.getElementById('start').style.display !== 'none') { if (e.key === ' ' || e.key === 'Enter') document.getElementById('play').click(); return; }
+    if (e.key === 'ArrowRight') { paused = false; show(idx + 1); }
+    else if (e.key === 'ArrowLeft') { paused = false; show(idx - 1); }
+    else if (e.key === ' ') { e.preventDefault(); setPaused(!paused); }
+    else if (e.key.toLowerCase() === 'r') restart();
+  });
+})();
+</script>
+</body>
+</html>
