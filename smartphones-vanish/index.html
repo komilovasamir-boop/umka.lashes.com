@@ -10,60 +10,37 @@
   html,body{height:100%;background:#000;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
   body{display:flex;align-items:center;justify-content:center}
   /* Fixed 9:16 stage (1080x1920 logical), scaled to fit */
-  #stage{position:relative;width:1080px;height:1920px;background:var(--bg);overflow:hidden;transform-origin:center center;flex:none;user-select:none;cursor:pointer}
+  #stage{position:relative;width:1080px;height:1920px;background:radial-gradient(120% 70% at 50% 30%,#141026 0%,var(--bg) 60%);overflow:hidden;transform-origin:center center;flex:none;user-select:none;cursor:pointer}
+  #gl{position:absolute;inset:0;width:1080px;height:1920px;z-index:1}
+  .shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to bottom,rgba(7,7,12,0) 48%,rgba(7,7,12,.82) 64%,rgba(7,7,12,.92) 100%)}
   .bars{position:absolute;top:40px;left:40px;right:40px;display:flex;gap:10px;z-index:10}
   .bar{flex:1;height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
   .bar i{display:block;height:100%;width:0;background:#fff}
   .tag{position:absolute;top:80px;left:40px;font:700 34px/1 system-ui;letter-spacing:4px;color:var(--muted);z-index:10;text-transform:uppercase}
-  .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:160px 90px;text-align:center;opacity:0;pointer-events:none}
+  .scene{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:160px 80px 230px;text-align:center;opacity:0;pointer-events:none}
   .scene.on{opacity:1}
-  .when{font:800 44px/1 system-ui;letter-spacing:6px;color:var(--accent2);margin-bottom:50px;text-transform:uppercase}
-  .icon{font-size:300px;line-height:1;margin-bottom:60px}
-  h1{font:900 120px/1.02 system-ui;letter-spacing:-3px}
-  h2{font:850 92px/1.05 system-ui;letter-spacing:-2px}
-  p{font:500 52px/1.35 system-ui;color:#d4d4de;margin-top:44px}
-  .big{font:900 260px/1 system-ui;color:var(--accent);letter-spacing:-8px}
+  .when{font:800 44px/1 system-ui;letter-spacing:6px;color:var(--accent2);margin-bottom:34px;text-transform:uppercase}
+  h1{font:900 112px/1.02 system-ui;letter-spacing:-3px}
+  h2{font:850 90px/1.05 system-ui;letter-spacing:-2px}
+  p{font:500 50px/1.35 system-ui;color:#d4d4de;margin-top:36px}
   .accent{color:var(--accent)} .yellow{color:var(--accent2)} .green{color:var(--good)}
-  /* entrance animation for children */
   .scene.on > *{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
   .scene.on > *:nth-child(2){animation-delay:.25s}
   .scene.on > *:nth-child(3){animation-delay:.55s}
   .scene.on > *:nth-child(4){animation-delay:.9s}
-  .scene.on > *:nth-child(5){animation-delay:1.2s}
   @keyframes rise{from{opacity:0;transform:translateY(70px)}to{opacity:1;transform:none}}
-  /* vanishing phone */
-  .phone{width:340px;height:680px;border-radius:60px;border:16px solid #2a2a35;background:linear-gradient(160deg,#2b5cff,#a12bff 60%,#ff3b5c);margin-bottom:80px;position:relative;box-shadow:0 0 120px rgba(160,60,255,.5)}
-  .phone:before{content:"";position:absolute;top:22px;left:50%;width:120px;height:30px;margin-left:-60px;background:#000;border-radius:20px}
-  .scene.on .phone.vanish{animation:vanish 3.2s ease-in 1s both}
-  @keyframes vanish{0%{opacity:1;filter:blur(0);transform:scale(1)}60%{opacity:.6;filter:blur(4px);transform:scale(1.03) rotate(-2deg)}100%{opacity:0;filter:blur(40px);transform:scale(.6) rotate(8deg)}}
-  .particles{position:absolute;inset:0;pointer-events:none}
-  .particles span{position:absolute;width:14px;height:14px;border-radius:3px;background:#b07bff;opacity:0}
-  .scene.on .particles span{animation:fly 2.6s ease-out both}
-  @keyframes fly{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(360deg)}}
-  .list{list-style:none;margin-top:50px;text-align:left;font:600 54px/1.6 system-ui}
-  .list li{opacity:0}
-  .scene.on .list li{animation:rise .6s both}
-  .scene.on .list li:nth-child(1){animation-delay:.6s}.scene.on .list li:nth-child(2){animation-delay:1s}
-  .scene.on .list li:nth-child(3){animation-delay:1.4s}.scene.on .list li:nth-child(4){animation-delay:1.8s}
-  .scene.on .list li:nth-child(5){animation-delay:2.2s}
-  .stock{width:820px;height:420px;margin-top:40px}
-  .stock path{fill:none;stroke:var(--accent);stroke-width:12;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400}
-  .scene.on .stock path{animation:draw 2.4s .5s ease-in-out forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
-  .shake{animation:shake .5s 1s 3 both}
-  .scene.on .shake{animation:rise .8s both,shake .4s 1s 4}
-  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-18px)}75%{transform:translateX(18px)}}
-  .counter{font:900 200px/1 system-ui;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .counter{font:900 190px/1 system-ui;font-variant-numeric:tabular-nums;color:var(--accent)}
   .hud{position:absolute;bottom:50px;left:0;right:0;text-align:center;font:600 30px system-ui;color:rgba(255,255,255,.45);z-index:10}
-  .btn{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);padding:28px 70px;border-radius:80px;background:#fff;color:#000;font:800 46px system-ui;border:0;cursor:pointer;z-index:11}
+  .btn{padding:28px 70px;border-radius:80px;background:#fff;color:#000;font:800 46px system-ui;border:0;cursor:pointer}
   #start{position:absolute;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:60px;text-align:center;padding:90px}
-  #start .btn{position:static;transform:none}
-  .glow{position:absolute;width:900px;height:900px;border-radius:50%;filter:blur(160px);opacity:.35;z-index:0}
-  .scene > *{position:relative;z-index:1}
+  .glow{position:absolute;width:900px;height:900px;border-radius:50%;filter:blur(160px);opacity:.3;z-index:0;left:90px;top:150px;pointer-events:none}
 </style>
 </head>
 <body>
 <div id="stage">
+  <div class="glow" id="glow" style="background:#7a2bff"></div>
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <div class="shade"></div>
   <div class="bars" id="bars"></div>
   <div class="tag">What if…</div>
 
@@ -74,95 +51,55 @@
     <div style="font:500 36px system-ui;color:var(--muted)">Tap right = next · left = back · hold = pause<br>Keys: ← → space · R restart</div>
   </div>
 
-  <!-- 1 -->
-  <section class="scene" data-dur="5500">
-    <div class="glow" style="background:#7a2bff;top:300px;left:90px"></div>
-    <div class="phone vanish"></div>
+  <section class="scene" data-dur="5500" data-glow="#7a2bff">
     <h1>One morning…<br>every smartphone<br><span class="accent">is gone.</span></h1>
-    <div class="particles" id="particles"></div>
   </section>
-
-  <!-- 2 -->
-  <section class="scene" data-dur="5000">
+  <section class="scene" data-dur="5000" data-glow="#ff3b5c">
     <div class="when">Hour 1</div>
-    <div class="icon shake">💳</div>
     <h2>Payments <span class="accent">freeze</span></h2>
-    <p>Mobile wallets, QR codes and banking apps are gone. In cash-light countries, shops simply stop.</p>
+    <p>Mobile wallets, QR codes and banking apps are gone. Shops simply stop.</p>
   </section>
-
-  <!-- 3 -->
-  <section class="scene" data-dur="5000">
+  <section class="scene" data-dur="5000" data-glow="#ffb020">
     <div class="when">Hour 2</div>
-    <div class="icon">🔒</div>
     <h2>Millions <span class="accent">locked out</span></h2>
     <p>Your 2-factor codes went to your phone. Email, bank, work: access denied.</p>
   </section>
-
-  <!-- 4 -->
-  <section class="scene" data-dur="5000">
+  <section class="scene" data-dur="5000" data-glow="#2b5cff">
     <div class="when">Hour 3</div>
-    <div class="icon">🗺️</div>
     <h2>Nobody can <span class="yellow">find anyone</span></h2>
-    <p>No maps. No contacts. Quick: how many phone numbers do you know by heart?</p>
+    <p>No maps. No contacts. How many numbers do you know by heart?</p>
   </section>
-
-  <!-- 5 -->
-  <section class="scene" data-dur="5500">
+  <section class="scene" data-dur="5500" data-glow="#ff2040">
     <div class="when">Day 1</div>
-    <div class="icon">🚑</div>
     <div class="counter" data-count="80">0%</div>
     <p>of emergency calls came from mobile phones. Landlines and radios matter again.</p>
   </section>
-
-  <!-- 6 -->
-  <section class="scene" data-dur="6000">
+  <section class="scene" data-dur="6000" data-glow="#3ddc97">
     <div class="when">Week 1</div>
     <h2>The <span class="green">comeback</span> of old tech</h2>
-    <ul class="list">
-      <li>☎️ Landlines</li>
-      <li>🗺️ Paper maps</li>
-      <li>💵 Cash</li>
-      <li>📷 Real cameras</li>
-      <li>⌚ Wristwatches</li>
-    </ul>
+    <p>Landlines, paper maps, cash and wristwatches are back.</p>
   </section>
-
-  <!-- 7 -->
-  <section class="scene" data-dur="5500">
+  <section class="scene" data-dur="5500" data-glow="#ff3b5c">
     <div class="when">Month 1</div>
     <h2>Tech giants <span class="accent">crash</span></h2>
-    <svg class="stock" viewBox="0 0 820 420"><path d="M20 60 L140 90 L230 70 L320 160 L400 140 L480 260 L560 240 L650 360 L800 400"/></svg>
     <p>Phone-first apps lose their platform. Laptop makers boom.</p>
   </section>
-
-  <!-- 8 -->
-  <section class="scene" data-dur="5500">
+  <section class="scene" data-dur="5500" data-glow="#6a5cff">
     <div class="when">Year 1</div>
-    <div class="icon">💻</div>
     <h2>The laptop is <span class="green">king</span> again</h2>
-    <p>Less scrolling, fewer short videos, more planned meetups: "See you at 6, by the clock."</p>
+    <p>Less scrolling, more planned meetups: "See you at 6, by the clock."</p>
   </section>
-
-  <!-- 9 -->
-  <section class="scene" data-dur="5500">
+  <section class="scene" data-dur="5500" data-glow="#2b6cff">
     <div class="when">Hardest hit</div>
-    <div class="icon">🌍</div>
     <h2>Billions lose their <span class="accent">only computer</span></h2>
     <p>For much of the world, the phone was the bank, the school and the clinic.</p>
   </section>
-
-  <!-- 10 -->
-  <section class="scene" data-dur="5500">
+  <section class="scene" data-dur="5500" data-glow="#a12bff">
     <div class="when">The catch</div>
-    <div class="icon">🏭</div>
     <h2>We'd just <span class="yellow">build them again</span>…</h2>
-    <p>…unless they keep vanishing. Then the future belongs to watches, glasses and desks.</p>
+    <p>…unless they keep vanishing. Then the future is watches, glasses and desks.</p>
   </section>
-
-  <!-- 11 -->
-  <section class="scene" data-dur="6000">
-    <div class="glow" style="background:#ff3b5c;top:500px;left:90px"></div>
-    <div class="icon">🤔</div>
+  <section class="scene" data-dur="6000" data-glow="#ff3b5c">
     <h1>Would <span class="accent">you</span> survive without yours?</h1>
     <p>Comment below 👇</p>
   </section>
@@ -170,16 +107,343 @@
   <div class="hud" id="hud"></div>
 </div>
 
+<script src="three.min.js"></script>
 <script>
+/* ===================== 3D WORLD ===================== */
+(() => {
+  const W = 1080, H = 1920, CENTER_Y = 660, ZOOM = 1.32; // 3D focus point sits in the upper part of the frame
+  const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
+  const scene = new THREE.Scene();
+  const L = H / 2 - CENTER_Y, FULL_H = H + 2 * L;
+  const camera = new THREE.PerspectiveCamera(48, W / FULL_H, 0.1, 100);
+  camera.setViewOffset(W, FULL_H, 0, 2 * L, W, H);
+
+  scene.add(new THREE.HemisphereLight(0xdfe6ff, 0x2a1840, 1.6));
+  const key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(4, 7, 8); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xb07bff, 2.2); rim.position.set(-6, 4, -6); scene.add(rim);
+
+  // ---------- helpers ----------
+  let seed = 12345; const rand = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+  const C01 = x => x < 0 ? 0 : x > 1 ? 1 : x, seg = (t, a, b) => C01((t - a) / (b - a));
+  const eOut = t => 1 - Math.pow(1 - t, 3), eIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const eBack = t => { const c = 1.70158; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+  const eBounce = t => { const n = 7.5625, d = 2.75; if (t < 1 / d) return n * t * t; if (t < 2 / d) return n * (t -= 1.5 / d) * t + .75; if (t < 2.5 / d) return n * (t -= 2.25 / d) * t + .9375; return n * (t -= 2.625 / d) * t + .984375; };
+  const M = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .45, metalness: .1 }, o));
+  const Box = (w, h, d) => new THREE.BoxGeometry(w, h, d);
+  const BoxB = (w, h, d) => { const g = new THREE.BoxGeometry(w, h, d); g.translate(0, h / 2, 0); return g; }; // base at y=0
+  const Cyl = (r1, r2, h, s = 24) => new THREE.CylinderGeometry(r1, r2, h, s);
+  function mesh(geo, mat, x = 0, y = 0, z = 0, parent) { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); if (parent) parent.add(m); return m; }
+  const grp = (x = 0, y = 0, z = 0, parent) => { const g = new THREE.Group(); g.position.set(x, y, z); if (parent) parent.add(g); return g; };
+  // fly a piece into its home position (assembly animation)
+  function flyIn(o, t, t0, dur, from) {
+    if (!o.userData.home) o.userData.home = o.position.clone();
+    const h = o.userData.home, k = eBack(seg(t, t0, t0 + dur)), r = 1 - k;
+    o.position.set(h.x + from[0] * r, h.y + from[1] * r, h.z + from[2] * r);
+    o.visible = t >= t0; o.scale.setScalar(Math.max(.001, seg(t, t0, t0 + dur * .5)));
+  }
+  // voxel model: cells [{home, color, glow}] -> group of instanced cubes with per-frame transform fn
+  function voxels(cells, size) {
+    const g = new THREE.Group(), o = new THREE.Object3D(), col = new THREE.Color(), parts = [];
+    for (const glow of [false, true]) {
+      const list = cells.filter(c => !!c.glow === glow); if (!list.length) continue;
+      const mat = glow ? new THREE.MeshBasicMaterial({ color: 0xffffff }) : M(0xffffff, { roughness: .3, metalness: .25 });
+      const im = new THREE.InstancedMesh(Box(size * .92, size * .92, size * .92), mat, list.length);
+      list.forEach((c, i) => { im.setColorAt(i, col.set(c.color)); c.dir = new THREE.Vector3(rand() - .5, rand() - .35, rand() - .15).normalize(); c.d = rand(); c.spin = new THREE.Vector3(rand() * 7, rand() * 7, rand() * 7); });
+      g.add(im); parts.push([im, list]);
+    }
+    g.apply = fn => { for (const [im, list] of parts) { list.forEach((c, i) => { fn(c, o); o.updateMatrix(); im.setMatrixAt(i, o.matrix); }); im.instanceMatrix.needsUpdate = true; } };
+    return g;
+  }
+  function phoneCells() {
+    const Wc = 9, Hc = 18, s = .22, cells = [];
+    const a = new THREE.Color('#2b5cff'), b = new THREE.Color('#a12bff'), c = new THREE.Color('#ff3b5c');
+    for (let z = 0; z < 2; z++) for (let y = 0; y < Hc; y++) for (let x = 0; x < Wc; x++) {
+      if ((x == 0 || x == Wc - 1) && (y == 0 || y == Hc - 1)) continue;
+      let color = '#2a2a35', glow = false;
+      if (z == 1 && x > 0 && x < Wc - 1 && y > 0 && y < Hc - 1) {
+        if (y == Hc - 2 && x >= 3 && x <= 5) color = '#050508';
+        else { const v = (Hc - 2 - y) / (Hc - 3); color = '#' + (v < .5 ? a.clone().lerp(b, v * 2) : b.clone().lerp(c, (v - .5) * 2)).getHexString(); glow = true; }
+      }
+      cells.push({ home: new THREE.Vector3((x - (Wc - 1) / 2) * s, (y - (Hc - 1) / 2) * s, (z - .5) * s), color, glow });
+    }
+    return { cells, s };
+  }
+  const assembleFn = (t, a, b) => (c, o) => { // pieces fly in from far away and lock into place
+    const k = eOut(C01(seg(t, a, b) * 1.7 - c.d * .7));
+    o.position.copy(c.home).addScaledVector(c.dir, (1 - k) * 7);
+    o.rotation.set(c.spin.x * (1 - k), c.spin.y * (1 - k), c.spin.z * (1 - k)); o.scale.setScalar(Math.max(.001, k));
+  };
+
+  // ---------- 1. the voxel phone dissolves ----------
+  function S1() {
+    const g = new THREE.Group(), { cells, s } = phoneCells(), v = voxels(cells, s); g.add(v);
+    return { g, cam: [0, 0, 13], update(t) {
+      g.rotation.y = Math.sin(t * .9) * .45 + .25; g.rotation.x = Math.sin(t * .6) * .08;
+      const p = seg(t, 1.4, 4.4);
+      v.apply((c, o) => { const k = eIO(C01(p * 1.7 - c.d * .7)); o.position.copy(c.home).addScaledVector(c.dir, k * 7); o.position.y += k * k * 2.5; o.rotation.set(c.spin.x * k, c.spin.y * k, c.spin.z * k); o.scale.setScalar(Math.max(.001, 1 - k * .95)); });
+    } };
+  }
+
+  // ---------- 2. a shop is built, then its shutter slams; cards & coins rain down ----------
+  function S2() {
+    const g = grp(0, -1.2, 0);
+    mesh(Cyl(2.7, 2.7, .15, 48), M(0x1d1b2e), 0, -.075, 0, g);
+    const shop = grp(0, 0, 0, g);
+    mesh(BoxB(3, 1.9, 1.6), M(0xf1e4d0), 0, 0, 0, shop);
+    mesh(BoxB(3.2, .18, 1.8), M(0x3a2f4a), 0, 1.9, 0, shop);
+    mesh(Box(2, .34, .08), M(0x2b5cff, { emissive: 0x2b5cff, emissiveIntensity: .7 }), 0, 1.65, .82, shop);
+    for (let i = 0; i < 8; i++) { const s = mesh(Box(3.2 / 8, .06, .75), M(i % 2 ? 0xffffff : 0xff3b5c), -1.6 + 3.2 / 16 + i * 3.2 / 8, 1.3, 1.08, shop); s.rotation.x = .45; }
+    mesh(BoxB(.7, 1.1, .05), M(0x3b2a20), -.85, 0, .81, shop);
+    mesh(BoxB(1.3, .8, .05), M(0xffd23f, { emissive: 0xffd23f, emissiveIntensity: .9 }), .55, .3, .81, shop);
+    const shutter = grp(0, 1.18, .87, shop);
+    mesh(Box(2.9, 1.18, .05), M(0x9a9dab, { metalness: .6, roughness: .35 }), 0, -.59, 0, shutter);
+    for (let i = 0; i < 6; i++) mesh(Box(2.9, .035, .08), M(0x6c6f7a), 0, -.1 - i * .19, 0, shutter);
+    const fall = [], cc = [0x2b5cff, 0xffd23f, 0x3ddc97, 0xff3b5c, 0xb07bff, 0xffffff];
+    for (let i = 0; i < 6; i++) { const m = mesh(Box(.85, .04, .54), M(cc[i], { metalness: .3, roughness: .3 }), 0, 0, 0, g); m.userData = { x: -1.9 + i * .76, z: 1.55 + rand() * .5, t0: 1.7 + i * .22, r: rand() * 6, h: .08 }; fall.push(m); }
+    for (let i = 0; i < 6; i++) { const m = mesh(Cyl(.17, .17, .05, 20), M(0xffc93c, { metalness: .85, roughness: .25 }), 0, 0, 0, g); m.userData = { x: -1.7 + i * .7, z: 2.1 + rand() * .3, t0: 2.0 + i * .25, r: rand() * 6, h: .06 }; fall.push(m); }
+    return { g, cam: [2.2, 3.2, 12], look: [0, -.2, 0], update(t) {
+      shop.scale.y = Math.max(.001, eBack(seg(t, 0, .9)));
+      shutter.scale.y = Math.max(.001, eBounce(seg(t, 1.3, 2.3)));
+      for (const m of fall) { const u = m.userData, k = seg(t, u.t0, u.t0 + 1); m.visible = t > u.t0; m.position.set(u.x, u.h + (1 - eBounce(k)) * 6.5, u.z); m.rotation.set(u.r * (1 - k), u.r, u.r * .6 * (1 - k)); }
+      g.rotation.y = Math.sin(t * .5) * .15 - .1;
+    } };
+  }
+
+  // ---------- 3. padlock slams shut, accounts turn red ----------
+  function S3() {
+    const g = new THREE.Group(), gold = M(0xf5c542, { metalness: .75, roughness: .28 }), steel = M(0xd2d5de, { metalness: .9, roughness: .2 });
+    const lock = grp(0, 0, 0, g);
+    mesh(Box(2.4, 1.9, .9), gold, 0, -.7, 0, lock);
+    const hole = mesh(Cyl(.17, .17, .1, 20), M(0x111111), 0, -.5, .46, lock); hole.rotation.x = Math.PI / 2;
+    mesh(Box(.12, .45, .1), M(0x111111), 0, -.8, .46, lock);
+    const sh = grp(0, 0, 0, lock);
+    mesh(new THREE.TorusGeometry(.8, .17, 16, 40, Math.PI), steel, 0, .9, 0, sh);
+    mesh(Cyl(.17, .17, .9, 16), steel, -.8, .45, 0, sh); mesh(Cyl(.17, .17, .9, 16), steel, .8, .45, 0, sh);
+    const ring = []; for (let i = 0; i < 10; i++) ring.push(mesh(Box(.34, .34, .34), M(0x3ddc97, { emissive: 0x3ddc97, emissiveIntensity: .5 }), 0, 0, 0, g));
+    const green = new THREE.Color(0x3ddc97), red = new THREE.Color(0xff2040);
+    return { g, cam: [0, .5, 13], update(t) {
+      const drop = eBounce(seg(t, .9, 1.6)); sh.position.y = .95 * (1 - drop);
+      sh.rotation.y = (1 - eOut(seg(t, .3, .9))) * 1.2;
+      lock.rotation.z = t > 1.4 ? Math.sin(t * 45) * .07 * Math.exp(-(t - 1.4) * 4) : 0;
+      lock.rotation.y = Math.sin(t * .7) * .35;
+      ring.forEach((m, i) => { const a = t * .6 + i / 10 * Math.PI * 2; m.position.set(Math.cos(a) * 2.3, -.3 + Math.sin(a * 2) * .25, Math.sin(a) * 1.2); m.rotation.set(t + i, t * 1.3, 0);
+        const k = seg(t, 1.6 + i * .12, 1.9 + i * .12); m.material.color.copy(green).lerp(red, k); m.material.emissive.copy(m.material.color); });
+    } };
+  }
+
+  // ---------- 4. a city builds itself; lost map pins wander ----------
+  function S4() {
+    const g = new THREE.Group(); const N = 8, sp = .62;
+    mesh(Box(5.6, .12, 5.6), M(0x161a2e), 0, -.06, 0, g);
+    const pal = [0x5b6cff, 0x7a5cff, 0x3a4a8a, 0x9aa3c7, 0x4fd1c5, 0x6e7bd9], blds = [];
+    for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
+      if (i % 3 == 2 || j % 3 == 2) continue;
+      const h = .3 + Math.pow(rand(), 2) * 2.3, x = (i - (N - 1) / 2) * sp, z = (j - (N - 1) / 2) * sp;
+      const b = mesh(BoxB(.5, h, .5), M(pal[(i * 7 + j * 3) % pal.length], { roughness: .6 }), x, 0, z, g);
+      b.userData.d = Math.hypot(x, z); blds.push(b);
+    }
+    const pins = []; for (let i = 0; i < 4; i++) { const p = grp(0, 0, 0, g); const pm = M(0xff3b5c, { emissive: 0xff3b5c, emissiveIntensity: .35 });
+      const cone = mesh(Cyl(.2, 0, .55, 20), pm, 0, .275, 0, p); mesh(new THREE.SphereGeometry(.24, 20, 14), pm, 0, .6, 0, p); mesh(new THREE.SphereGeometry(.1, 12, 8), M(0xffffff), 0, .62, .18, p); pins.push(p); }
+    return { g, cam: [0, 8.5, 10], look: [0, .3, 0], update(t) {
+      for (const b of blds) b.scale.y = Math.max(.001, eBack(seg(t, .05 + b.userData.d * .25, .65 + b.userData.d * .25)));
+      pins.forEach((p, i) => { const k = eBounce(seg(t, 1.6 + i * .2, 2.4 + i * .2)); p.visible = t > 1.6 + i * .2;
+        p.position.set(Math.sin(t * 1.1 + i * 1.7) * 1.6, 2.8 + (1 - k) * 5 + Math.abs(Math.sin(t * 4 + i)) * .3, Math.cos(t * .9 + i * 2.3) * 1.4); p.rotation.y = t * 2 + i; p.rotation.z = Math.sin(t * 3 + i) * .25; });
+      g.rotation.y = t * .15;
+    } };
+  }
+
+  // ---------- 5. ambulance rushes through the city ----------
+  function S5() {
+    const g = grp(0, -.7, 0);
+    mesh(Box(14, .1, 2.8), M(0x24242f), 0, -.05, 0, g);
+    const dashes = []; for (let i = 0; i < 12; i++) dashes.push(mesh(Box(.6, .02, .1), M(0xffffff, { emissive: 0x888888 }), 0, .01, 0, g));
+    const city = []; for (let i = 0; i < 12; i++) { const h = .8 + rand() * 2.8; city.push(mesh(BoxB(.9, h, .9), M([0x3a2f6a, 0x2c3a6e, 0x4a3a7a][i % 3], { roughness: .7 }), 0, 0, -2.4, g)); }
+    const amb = grp(0, 0, 0, g), white = M(0xf4f4f8, { roughness: .35 }), red = M(0xff2040);
+    mesh(BoxB(2.2, 1.45, 1.3), white, -.45, .32, 0, amb);
+    mesh(BoxB(1, 1.05, 1.25), white, 1.15, .32, 0, amb);
+    mesh(Box(.06, .48, 1.1), M(0x1b2a50, { metalness: .5, roughness: .1 }), 1.66, 1.05, 0, amb);
+    mesh(Box(.5, .4, .02), M(0x1b2a50, { metalness: .5, roughness: .1 }), 1.2, 1.05, .63, amb);
+    mesh(Box(3.25, .16, 1.32), red, .1, .78, 0, amb);
+    mesh(Box(.55, .16, .02), red, -.45, 1.3, .66, amb); mesh(Box(.16, .55, .02), red, -.45, 1.3, .66, amb);
+    const wheels = [[-1.1, .6], [-1.1, -.6], [1.2, .6], [1.2, -.6]].map(([x, z]) => { const w = mesh(Cyl(.33, .33, .26, 20), M(0x15151c), x, .33, z, amb); mesh(Cyl(.15, .15, .27, 12), M(0xaaaaaa, { metalness: .8 }), 0, 0, 0, w); return w; });
+    const lr = M(0xff2040, { emissive: 0xff2040 }), lb = M(0x2b6cff, { emissive: 0x2b6cff });
+    mesh(Box(.4, .16, .35), lr, -.7, 1.85, 0, amb); mesh(Box(.4, .16, .35), lb, -.2, 1.85, 0, amb);
+    const pr = new THREE.PointLight(0xff2040, 0, 8); pr.position.set(-.7, 2.3, .6); amb.add(pr);
+    const pb = new THREE.PointLight(0x2b6cff, 0, 8); pb.position.set(-.2, 2.3, .6); amb.add(pb);
+    return { g, cam: [5, 2.8, 11], look: [0, .2, 0], update(t) {
+      const sp = 5; dashes.forEach((d, i) => { d.position.x = ((i * 1.2 - t * sp) % 14 + 14) % 14 - 7; });
+      city.forEach((c, i) => { c.position.x = ((i * 1.15 - t * sp * .7) % 13.8 + 13.8) % 13.8 - 6.9; });
+      amb.position.x = -7 + 7 * eOut(seg(t, 0, 1.3)); amb.position.y = Math.abs(Math.sin(t * 18)) * .03;
+      wheels.forEach(w => w.rotation.set(Math.PI / 2, -t * 14, 0));
+      const f = Math.floor(t * 7) % 2; lr.emissiveIntensity = f ? 2.5 : .2; lb.emissiveIntensity = f ? .2 : 2.5; pr.intensity = f ? 25 : 0; pb.intensity = f ? 0 : 25;
+    } };
+  }
+
+  // ---------- 6. old tech assembles piece by piece ----------
+  function S6() {
+    const g = new THREE.Group(), pieces = []; g.scale.setScalar(1.22);
+    const P = (o, t0, from, dur = .7) => { pieces.push([o, t0, from, dur]); return o; };
+    // landline phone
+    const ph = grp(-1.25, .7, 0, g); const red = M(0xd13a32, { roughness: .35 });
+    P(mesh(BoxB(1.5, .45, 1), red, 0, 0, 0, ph), .1, [0, -4, 0]);
+    P(mesh(Box(1.2, .06, .55), M(0xeee6d8), 0, .48, .2, ph), .35, [0, 3, 0]);
+    for (let i = 0; i < 9; i++) P(mesh(Box(.16, .07, .1), M(0x2a2a35), -.3 + (i % 3) * .3, .53, .07 + Math.floor(i / 3) * .14, ph), .5 + i * .05, [0, 2.5, 1], .5);
+    const hs = P(grp(0, .78, -.15, ph), 1.0, [0, 4, 0]);
+    const hsr = mesh(Cyl(.1, .1, 1.3, 16), red, 0, 0, 0, hs); hsr.rotation.z = Math.PI / 2;
+    mesh(Box(.32, .24, .42), red, -.65, -.06, 0, hs); mesh(Box(.32, .24, .42), red, .65, -.06, 0, hs);
+    // cash stack
+    const cash = grp(1.25, .75, 0, g);
+    for (let i = 0; i < 7; i++) P(mesh(BoxB(1.3, .075, .66), M(i % 2 ? 0x2e9e5b : 0x3ab56c, { roughness: .7 }), (rand() - .5) * .06, i * .085, 0, cash), .3 + i * .14, [0, 4, 0], .5);
+    P(mesh(BoxB(.22, .64, .69), M(0xf2e3c2), 0, -.01, 0, cash), 1.4, [3, 0, 0], .5);
+    // folding paper map
+    const map = grp(-1.25, -1.35, .2, g); map.rotation.x = .5;
+    const panels = []; for (let i = 0; i < 4; i++) { const pg = grp(0, 0, 0, map); mesh(Box(.5, 1.1, .02), M(i % 2 ? 0xe8dcc0 : 0xcfe3c0, { roughness: .9, side: THREE.DoubleSide }), 0, 0, 0, pg); mesh(Box(.5, .05, .03), M(0xff3b5c), 0, (i - 1.5) * .18, .01, pg); panels.push(pg); }
+    const pin = mesh(Cyl(.12, 0, .35, 16), M(0xff3b5c, { emissive: 0xff3b5c, emissiveIntensity: .4 }), .15, .2, .3, map); pin.rotation.x = -Math.PI / 2;
+    // watch
+    const wt = grp(1.25, -1.3, 0, g); const metal = M(0xd8dbe4, { metalness: .9, roughness: .2 });
+    const strapT = P(mesh(Box(.44, .75, .08), M(0x6b3e22, { roughness: .8 }), 0, .8, -.05, wt), .6, [0, 3, 0]);
+    const strapB = P(mesh(Box(.44, .75, .08), M(0x6b3e22, { roughness: .8 }), 0, -.8, -.05, wt), .6, [0, -3, 0]);
+    const cse = P(mesh(Cyl(.52, .52, .2, 40), metal, 0, 0, 0, wt), .8, [3, 0, 0]); cse.rotation.x = Math.PI / 2;
+    const dial = P(mesh(Cyl(.44, .44, .02, 40), M(0xfafafa), 0, 0, .11, wt), 1.0, [0, 0, 3]); dial.rotation.x = Math.PI / 2;
+    const hh = P(grp(0, 0, .14, wt), 1.2, [0, 0, 2]); mesh(Box(.06, .26, .02), M(0x111111), 0, .11, 0, hh);
+    const mh = P(grp(0, 0, .15, wt), 1.25, [0, 0, 2]); mesh(Box(.04, .38, .02), M(0xff3b5c), 0, .17, 0, mh);
+    return { g, cam: [0, .6, 12.5], update(t) {
+      for (const [o, t0, from, dur] of pieces) flyIn(o, t, t0, dur, from);
+      const a = Math.max(.12, 1.35 - 1.23 * eOut(seg(t, .7, 2.0))); let x = 0; const pos = [];
+      for (let i = 0; i < 4; i++) { const ang = i % 2 ? -a : a; pos.push([x + Math.cos(ang) * .25, Math.sin(ang) * .25, ang]); x += Math.cos(ang) * .5; }
+      panels.forEach((p, i) => { p.position.set(pos[i][0] - x / 2, 0, pos[i][1]); p.rotation.y = -pos[i][2]; });
+      map.visible = t > .4; map.scale.setScalar(Math.max(.001, eBack(seg(t, .4, 1)))); pin.visible = t > 2;
+      hh.rotation.z = -t * 1.5; mh.rotation.z = -t * 9;
+      [ph, cash, map, wt].forEach((o, i) => o.rotation.y = Math.sin(t * .8 + i) * .35);
+    } };
+  }
+
+  // ---------- 7. tech towers crash, one green tower rises ----------
+  function S7() {
+    const g = grp(0, -1.5, 0);
+    mesh(Box(5.2, .15, 2.4), M(0x1d1b2e), 0, -.075, 0, g);
+    const purple = new THREE.Color(0x6a5cff), red = new THREE.Color(0xff2040);
+    const bars = [3.3, 2.9, 3.6, 2.7].map((h, i) => { const b = mesh(BoxB(.7, h, .7), M(0x6a5cff, { roughness: .35, metalness: .3 }), -1.95 + i * .95, 0, 0, g); b.userData.h = h; return b; });
+    const up = mesh(BoxB(.7, 3.6, .7), M(0x3ddc97, { emissive: 0x3ddc97, emissiveIntensity: .35 }), 1.85, 0, 0, g);
+    const arrow = grp(0, 0, 1.2, g), am = M(0xff2040, { emissive: 0xff2040, emissiveIntensity: .6 });
+    mesh(Box(.22, 2.2, .22), am, 0, .2, 0, arrow); const head = mesh(Cyl(.42, 0, .7, 4), am, 0, -1.2, 0, arrow); head.rotation.y = Math.PI / 4;
+    const deb = []; for (let i = 0; i < 18; i++) deb.push(mesh(Box(.14, .14, .14), M(0xff2040, { emissive: 0x801020 }), 0, 0, 0, g));
+    return { g, cam: [3, 2.2, 12.5], look: [0, -.2, 0], update(t) {
+      bars.forEach((b, i) => { const k = eIO(seg(t, .8 + i * .15, 2.3 + i * .15)); b.scale.y = Math.max(.05, eBack(seg(t, 0, .7)) * (1 - .78 * k)); b.material.color.copy(purple).lerp(red, k); });
+      up.scale.y = Math.max(.03, .1 + .9 * eOut(seg(t, 1.8, 3.4)));
+      const ka = eIO(seg(t, .5, 2.4)); arrow.visible = t > .5; arrow.position.set(-2.2 + ka * 3.2, 4.8 - ka * 3.6, 1.2); arrow.rotation.z = .65;
+      deb.forEach((d, i) => { const b = bars[i % 4], tt = (t - 1 - i * .08); d.visible = tt > 0 && tt < 2;
+        d.position.set(b.position.x + Math.sin(i * 3.1) * .5 * tt, b.userData.h * b.scale.y + 2 * tt - 4.9 * tt * tt * .6, Math.cos(i * 2.3) * .4 * tt + .3); d.rotation.set(tt * 5, tt * 4, 0); });
+      g.rotation.y = Math.sin(t * .4) * .12;
+    } };
+  }
+
+  // ---------- 8. a laptop builds itself and opens ----------
+  function S8() {
+    const g = grp(0, -1, 0);
+    mesh(Cyl(2.6, 2.6, .12, 48), M(0x1d1b2e), 0, -.06, 0, g);
+    const lp = grp(0, 0, 0, g), alu = M(0xc9ccd6, { metalness: .8, roughness: .3 });
+    mesh(BoxB(3.2, .14, 2.1), alu, 0, 0, 0, lp);
+    mesh(Box(2.8, .01, 1.05), M(0x22232c), 0, .145, -.25, lp);
+    mesh(Box(1.05, .01, .55), M(0xb4b8c4, { metalness: .6 }), 0, .145, .65, lp);
+    const keys = new THREE.InstancedMesh(Box(.17, .05, .17), M(0x3a3b47), 13 * 4), o = new THREE.Object3D(); lp.add(keys);
+    const lid = grp(0, .14, -1.05, lp);
+    mesh(BoxB(3.2, 2.1, .08), alu, 0, 0, -.04, lid);
+    const cv = document.createElement('canvas'); cv.width = 640; cv.height = 400; const x = cv.getContext('2d');
+    const gr = x.createLinearGradient(0, 0, 640, 400); gr.addColorStop(0, '#1b2a6b'); gr.addColorStop(1, '#a12bff'); x.fillStyle = gr; x.fillRect(0, 0, 640, 400);
+    x.fillStyle = 'rgba(255,255,255,.92)'; x.fillRect(40, 40, 360, 240); x.fillStyle = 'rgba(255,255,255,.35)'; x.fillRect(430, 40, 170, 110); x.fillRect(430, 170, 170, 110);
+    x.fillStyle = '#6a5cff'; for (let i = 0; i < 6; i++) x.fillRect(64, 70 + i * 32, 120 + ((i * 97) % 180), 14);
+    x.fillStyle = 'rgba(255,255,255,.8)'; x.fillRect(40, 310, 560, 50);
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+    const scr = new THREE.MeshBasicMaterial({ map: tex, color: 0x000000 });
+    mesh(new THREE.PlaneGeometry(3, 1.9), scr, 0, 1.05, .005, lid);
+    return { g, cam: [0, 3, 12], look: [0, -.3, 0], update(t) {
+      lp.position.y = -3.2 * (1 - eBack(seg(t, 0, .8))); lp.rotation.y = (1 - eOut(seg(t, 0, 1.5))) * 2.6 + Math.sin(t * .6) * .25;
+      for (let i = 0; i < 52; i++) { const c = i % 13, r = Math.floor(i / 13), k = eBack(seg(t, .4 + i * .012, .7 + i * .012));
+        o.position.set(-1.26 + c * .21, .17 + (1 - k) * 1.2, -.66 + r * .24); o.scale.setScalar(Math.max(.001, k)); o.updateMatrix(); keys.setMatrixAt(i, o.matrix); }
+      keys.instanceMatrix.needsUpdate = true;
+      lid.rotation.x = Math.PI / 2 + (-.28 - Math.PI / 2) * eOut(seg(t, 1.0, 2.2));
+      scr.color.setScalar(seg(t, 1.7, 2.4));
+    } };
+  }
+
+  // ---------- 9. the globe goes dark ----------
+  function S9() {
+    const g = new THREE.Group(); g.rotation.z = .35;
+    const R = 2.05; mesh(new THREE.SphereGeometry(R, 64, 40), M(0x15214d, { roughness: .8 }), 0, 0, 0, g);
+    mesh(new THREE.SphereGeometry(R * 1.12, 48, 32), new THREE.MeshBasicMaterial({ color: 0x3b6cff, transparent: true, opacity: .1, side: THREE.BackSide }), 0, 0, 0, g);
+    const pts = [], N = 2600;
+    for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * 2.39996; const p = new THREE.Vector3(Math.cos(th) * r, y, Math.sin(th) * r);
+      const land = Math.sin(3.1 * p.x + 1.3) * Math.cos(2.7 * p.y - .4) + Math.sin(2.3 * p.z + .7) * .8 + Math.sin(5 * p.x + 3 * p.z) * .35;
+      if (land > .55 && Math.abs(y) < .92) pts.push({ p: p.multiplyScalar(R * 1.01), off: 1 + rand() * 3.3 }); }
+    const im = new THREE.InstancedMesh(Box(.06, .06, .06), new THREE.MeshBasicMaterial({ color: 0xffffff }), pts.length), o = new THREE.Object3D(); g.add(im);
+    pts.forEach((d, i) => { o.position.copy(d.p); o.lookAt(0, 0, 0); o.updateMatrix(); im.setMatrixAt(i, o.matrix); im.setColorAt(i, new THREE.Color(0xffd23f)); });
+    const on = new THREE.Color(0xffd23f), off = new THREE.Color(0x2a2f48), c = new THREE.Color();
+    return { g, cam: [0, 0, 13], update(t) {
+      g.rotation.y = t * .35;
+      pts.forEach((d, i) => { const k = seg(t, d.off, d.off + .25); c.copy(on).lerp(off, k); if (k < 1 && (i + Math.floor(t * 8)) % 23 == 0) c.multiplyScalar(1.6); im.setColorAt(i, c); });
+      im.instanceColor.needsUpdate = true;
+    } };
+  }
+
+  // ---------- 10. a factory rises and rebuilds a phone voxel by voxel ----------
+  function S10() {
+    const g = grp(0, -1.3, 0);
+    mesh(Box(5.4, .12, 3.2), M(0x1d1b2e), 0, -.06, 0, g);
+    const fx = grp(-1.15, 0, -.7, g), wall = M(0x59607a, { roughness: .7 });
+    mesh(BoxB(2.5, 1.2, 1.5), wall, 0, 0, 0, fx);
+    for (let i = 0; i < 3; i++) { const r = mesh(Cyl(.46, .46, 1.5, 3), M(0x8a90a8), -.82 + i * .82, 1.42, 0, fx); r.rotation.set(Math.PI / 2, 0, 0); }
+    for (let i = 0; i < 4; i++) mesh(Box(.35, .25, .03), M(0xffd23f, { emissive: 0xffd23f, emissiveIntensity: 1 }), -.9 + i * .6, .6, .76, fx);
+    const chims = [[.75, -.35], [.3, -.45]].map(([x, z]) => { mesh(BoxB(.28, 2.2, .28), M(0x7a3b3b), x, 0, z, fx); return [x, z]; });
+    const smoke = []; chims.forEach(([x, z], ci) => { for (let k = 0; k < 6; k++) smoke.push({ m: mesh(new THREE.SphereGeometry(.22, 14, 10), new THREE.MeshStandardMaterial({ color: 0xc9c9d6, transparent: true, opacity: .6, roughness: 1 }), x, 2.2, z, fx), k, ci }); });
+    mesh(Box(2.4, .16, .8), M(0x2a2a35), 1.15, .42, .9, g);
+    for (let i = 0; i < 6; i++) { const r = mesh(Cyl(.07, .07, .82, 10), M(0x9a9dab, { metalness: .8 }), .1 + i * .42, .5, .9, g); r.rotation.x = Math.PI / 2; }
+    const ph = grp(1.15, .5 + 1.98 * .45, .9, g); ph.scale.setScalar(.45);
+    const { cells, s } = phoneCells(), v = voxels(cells, s); ph.add(v);
+    return { g, cam: [2, 2.6, 12], look: [0, -.2, 0], update(t) {
+      fx.scale.y = Math.max(.001, eBack(seg(t, 0, .9)));
+      smoke.forEach(({ m, k, ci }) => { const u = ((t * .5 + k / 6 + ci * .08) % 1); m.position.y = 2.2 + u * 1.8; m.position.x = chims[ci][0] + u * .5; m.scale.setScalar(.4 + u * 1.3); m.material.opacity = .55 * (1 - u) * seg(t, .8, 1.2); });
+      v.apply(assembleFn(t, .8, 4.3)); ph.rotation.y = Math.sin(t * .7) * .4;
+    } };
+  }
+
+  // ---------- 11. a voxel question mark ----------
+  function S11() {
+    const g = new THREE.Group(), s = .34, rows = ['.XXXXX.', 'XXX.XXX', 'XX...XX', '....XXX', '...XXX.', '...XX..', '...XX..', '.......', '...XX..', '...XX..'], cells = [];
+    const a = new THREE.Color('#ff3b5c'), b = new THREE.Color('#a12bff');
+    rows.forEach((r, y) => [...r].forEach((ch, x) => { if (ch != 'X') return; for (let z = 0; z < 2; z++) cells.push({ home: new THREE.Vector3((x - 3) * s, (4.5 - y) * s, (z - .5) * s), color: '#' + a.clone().lerp(b, y / 9).getHexString(), glow: z == 1 && y >= 8 }); }));
+    const v = voxels(cells, s); g.add(v);
+    const orb = []; for (let i = 0; i < 10; i++) orb.push(mesh(new THREE.SphereGeometry(.09 + rand() * .08, 12, 8), new THREE.MeshBasicMaterial({ color: i % 2 ? 0xff3b5c : 0xb07bff }), 0, 0, 0, g));
+    return { g, cam: [0, 0, 12.5], update(t) {
+      v.apply(assembleFn(t, 0, 1.8)); v.rotation.y = Math.sin(t * .9) * .6; v.position.y = Math.sin(t * 1.6) * .12;
+      orb.forEach((m, i) => { const ang = t * (.5 + i * .05) + i; m.position.set(Math.cos(ang) * (2.2 + i % 3 * .2), Math.sin(ang * 1.3 + i) * 1.6, Math.sin(ang) * 1.2); });
+    } };
+  }
+
+  const scenes3d = [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11].map(f => f());
+  scenes3d.forEach(s => { s.g.visible = false; scene.add(s.g); });
+  let cur = -1;
+  window.render3D = (i, t) => {
+    i = Math.max(0, Math.min(scenes3d.length - 1, i));
+    if (i !== cur) { if (cur >= 0) scenes3d[cur].g.visible = false; cur = i; scenes3d[i].g.visible = true; }
+    const s = scenes3d[i]; s.update(t);
+    const [cx, cy, cz] = s.cam, lk = s.look || [0, 0, 0], a = Math.sin(t * .45) * .1 - .05, push = ZOOM * (1 + .06 * (1 - eOut(seg(t, 0, 1.2))));
+    camera.position.set((cx * Math.cos(a) + cz * Math.sin(a)) * push, cy * push, (cz * Math.cos(a) - cx * Math.sin(a)) * push);
+    camera.lookAt(lk[0], lk[1], lk[2]);
+    renderer.render(scene, camera);
+  };
+})();
+
+/* ===================== STORY PLAYER ===================== */
 (() => {
   const stage = document.getElementById('stage');
   const scenes = [...document.querySelectorAll('.scene')];
-  const barsEl = document.getElementById('bars');
-  const hud = document.getElementById('hud');
-  let idx = -1, start = 0, elapsed = 0, paused = false, raf = 0;
+  const barsEl = document.getElementById('bars'), hud = document.getElementById('hud'), glow = document.getElementById('glow'), startEl = document.getElementById('start');
+  let idx = -1, start = 0, elapsed = 0, paused = false, ended = false;
 
-  // Scale the fixed 1080x1920 stage to fit any screen, keeping 9:16
-  function fit(){
+  function fit() {
     const s = Math.min(innerWidth / 1080, innerHeight / 1920);
     stage.style.transform = `scale(${s})`;
     stage.style.margin = `${(innerHeight - 1920) / 2}px ${(innerWidth - 1080) / 2}px`;
@@ -189,85 +453,68 @@
   scenes.forEach(() => { const b = document.createElement('div'); b.className = 'bar'; b.innerHTML = '<i></i>'; barsEl.appendChild(b); });
   const fills = [...barsEl.querySelectorAll('i')];
 
-  // particles for the vanishing phone
-  const pc = document.getElementById('particles');
-  for (let i = 0; i < 60; i++) {
-    const s = document.createElement('span');
-    const a = Math.random() * Math.PI * 2, d = 300 + Math.random() * 600;
-    s.style.left = (540 + (Math.random() - .5) * 300) + 'px';
-    s.style.top = (700 + (Math.random() - .5) * 600) + 'px';
-    s.style.setProperty('--x', Math.cos(a) * d + 'px');
-    s.style.setProperty('--y', Math.sin(a) * d - 300 + 'px');
-    s.style.animationDelay = (1.6 + Math.random() * 1.6) + 's';
-    s.style.background = ['#b07bff', '#2b5cff', '#ff3b5c'][i % 3];
-    pc.appendChild(s);
-  }
-
-  function show(i){
+  function show(i) {
     if (i < 0) i = 0;
     if (i >= scenes.length) { end(); return; }
+    ended = false; paused = false;
     scenes.forEach(s => s.classList.remove('on'));
-    void stage.offsetWidth; // restart CSS animations
+    void stage.offsetWidth;
     idx = i; elapsed = 0; start = performance.now();
     scenes[i].classList.add('on');
+    glow.style.background = scenes[i].dataset.glow || '#7a2bff';
     fills.forEach((f, k) => f.style.width = k < i ? '100%' : '0%');
     const c = scenes[i].querySelector('[data-count]');
     if (c) countUp(c, +c.dataset.count);
     hud.textContent = `${i + 1} / ${scenes.length}`;
   }
-
-  function countUp(el, target){
+  function countUp(el, target) {
     const t0 = performance.now();
     const step = t => { const p = Math.min(1, (t - t0) / 1800); el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + '%'; if (p < 1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   }
-
-  function tick(t){
-    if (!paused && idx >= 0) {
+  function tick(t) {
+    if (idx >= 0) {
       const dur = +scenes[idx].dataset.dur;
-      const e = elapsed + (t - start);
-      fills[idx].style.width = Math.min(100, e / dur * 100) + '%';
-      if (e >= dur) show(idx + 1);
+      const e = (paused || ended) ? elapsed : elapsed + (t - start);
+      if (!paused && !ended) {
+        fills[idx].style.width = Math.min(100, e / dur * 100) + '%';
+        if (e >= dur) { show(idx + 1); }
+      }
+      if (window.render3D) window.render3D(idx, (paused || ended) ? elapsed / 1000 : (performance.now() - start + elapsed) / 1000);
     }
-    raf = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
-
-  function setPaused(p){
-    if (p === paused || idx < 0) return;
+  function setPaused(p) {
+    if (p === paused || idx < 0 || ended) return;
     if (p) elapsed += performance.now() - start; else start = performance.now();
     paused = p;
     stage.querySelectorAll('.scene.on *').forEach(n => n.style.animationPlayState = p ? 'paused' : 'running');
     hud.textContent = p ? '❚❚ Paused' : `${idx + 1} / ${scenes.length}`;
   }
-
-  function end(){
+  function end() {
+    elapsed += performance.now() - start; ended = true;
     fills.forEach(f => f.style.width = '100%');
     hud.textContent = 'Tap or press R to replay';
-    idx = scenes.length; // stops ticking
-    paused = true;
   }
+  function restart() { startEl.style.display = 'none'; show(0); }
 
-  function restart(){ paused = false; document.getElementById('start').style.display = 'none'; show(0); }
+  document.getElementById('play').addEventListener('click', e => { e.stopPropagation(); restart(); });
+  requestAnimationFrame(tick);
 
-  document.getElementById('play').addEventListener('click', e => { e.stopPropagation(); restart(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); });
-
-  // Tap: left third = back, otherwise next. Hold = pause.
   let holdT = 0, held = false;
   stage.addEventListener('pointerdown', () => { held = false; holdT = setTimeout(() => { held = true; setPaused(true); }, 250); });
   stage.addEventListener('pointerup', e => {
     clearTimeout(holdT);
-    if (document.getElementById('start').style.display !== 'none') return;
+    if (startEl.style.display !== 'none') return;
     if (held) { setPaused(false); return; }
-    if (idx >= scenes.length) { restart(); return; }
+    if (ended) { restart(); return; }
     const r = stage.getBoundingClientRect();
-    paused = false;
     show((e.clientX - r.left) < r.width / 3 ? idx - 1 : idx + 1);
   });
-
   addEventListener('keydown', e => {
-    if (document.getElementById('start').style.display !== 'none') { if (e.key === ' ' || e.key === 'Enter') document.getElementById('play').click(); return; }
-    if (e.key === 'ArrowRight') { paused = false; show(idx + 1); }
-    else if (e.key === 'ArrowLeft') { paused = false; show(idx - 1); }
+    if (startEl.style.display !== 'none') { if (e.key === ' ' || e.key === 'Enter') document.getElementById('play').click(); return; }
+    if (e.key === 'ArrowRight') show(idx + 1);
+    else if (e.key === 'ArrowLeft') show(idx - 1);
     else if (e.key === ' ') { e.preventDefault(); setPaused(!paused); }
     else if (e.key.toLowerCase() === 'r') restart();
   });
